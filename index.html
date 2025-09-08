@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warung Mie Ayam Lezat - Nikmati Kelezatan Sejati</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/lucide.min.js"></script>
+
+    <style>
+        /* Menggunakan font Poppins sebagai default */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        /* Efek overlay gradient pada hero section */
+        .hero-overlay {
+            background: linear-gradient(to top, rgba(17, 24, 39, 1) 0%, rgba(17, 24, 39, 0.6) 50%, rgba(17, 24, 39, 1) 100%);
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <!-- 
+      NAVIGASI / HEADER
+      Anda bisa mengubah "Mie Ayam Juara" menjadi nama brand Anda.
+    -->
+    <header class="bg-gray-900 bg-opacity-80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center p-4">
+            <a href="#home" class="text-2xl font-bold text-yellow-400">Mie Ayam Juara</a>
+            <nav class="hidden md:flex space-x-6 items-center">
+                <a href="#home" class="hover:text-yellow-400 transition-colors">Beranda</a>
+                <a href="#menu" class="hover:text-yellow-400 transition-colors">Menu</a>
+                <a href="#tentang" class="hover:text-yellow-400 transition-colors">Tentang Kami</a>
+                <a href="#kontak" class="hover:text-yellow-400 transition-colors">Kontak</a>
+            </nav>
+            <a href="#" class="bg-yellow-500 text-gray-900 font-bold py-2 px-6 rounded-full hover:bg-yellow-400 transition-transform hover:scale-105">
+                Pesan Online
+            </a>
+            <!-- Tombol Menu Mobile -->
+            <button id="mobile-menu-button" class="md:hidden">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <!-- Menu Mobile (muncul saat tombol di klik) -->
+        <div id="mobile-menu" class="md:hidden hidden bg-gray-800 p-4">
+             <a href="#home" class="block py-2 text-center hover:text-yellow-400 transition-colors">Beranda</a>
+             <a href="#menu" class="block py-2 text-center hover:text-yellow-400 transition-colors">Menu</a>
+             <a href="#tentang" class="block py-2 text-center hover:text-yellow-400 transition-colors">Tentang Kami</a>
+             <a href="#kontak" class="block py-2 text-center hover:text-yellow-400 transition-colors">Kontak</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- 
+          BAGIAN HERO / BERANDA
+          Ganti URL di 'background-image' dengan link gambar terbaik Anda.
+          Ukuran ideal: 1920x1080 pixels.
+        -->
+        <section id="home" class="relative h-screen flex items-center justify-center bg-cover bg-center bg-fixed" style="background-image: url('https://placehold.co/1920x1080/111827/FFFFFF?text=Ganti+dengan+Foto+Mie+Ayam+Terbaik+Anda');">
+            <div class="absolute inset-0 hero-overlay"></div>
+            <div class="relative text-center z-10 px-4">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
+                    Kelezatan Mie Ayam <span class="text-yellow-400">Legendaris</span>
+                </h1>
+                <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8 text-gray-300">
+                    Dibuat dengan resep turun-temurun dan bahan-bahan pilihan, siap memanjakan lidah Anda.
+                </p>
+                <a href="#menu" class="bg-yellow-500 text-gray-900 font-bold py-3 px-8 rounded-full text-lg hover:bg-yellow-400 transition-transform hover:scale-105 transform">
+                    Lihat Menu
+                </a>
+            </div>
+        </section>
+
+        <!-- 
+          BAGIAN MENU
+          Untuk setiap item menu, ganti src pada tag <img> dengan link gambar produk Anda.
+          Ukuran ideal gambar menu: 600x400 pixels.
+        -->
+        <section id="menu" class="py-20 bg-gray-800">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">Menu Andalan Kami</h2>
+                    <p class="text-gray-400 mt-2">Pilih favoritmu dari varian mie ayam terbaik kami.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Item Menu 1 -->
+                    <div class="bg-gray-900 rounded-lg overflow-hidden shadow-xl transform hover:-translate-y-2 transition-transform duration-300 group">
+                        <img src="https://placehold.co/600x400/111827/FFFFFF?text=Gambar+Mie+Ayam+Original" alt="" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2 text-yellow-400">Mie Ayam Original</h3>
+                            <p class="text-gray-400 mb-4">Mie kenyal dengan topping ayam bumbu manis gurih dan sawi segar.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-white">Rp 15.000</span>
+                                <button class="bg-gray-700 text-white py-2 px-4 rounded-full group-hover:bg-yellow-500 group-hover:text-gray-900 transition-colors">Pesan</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item Menu 2 -->
+                    <div class="bg-gray-900 rounded-lg overflow-hidden shadow-xl transform hover:-translate-y-2 transition-transform duration-300 group">
+                        <img src="https://placehold.co/600x400/111827/FFFFFF?text=Gambar+Mie+Ayam+Bakso" alt="" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2 text-yellow-400">Mie Ayam Bakso</h3>
+                            <p class="text-gray-400 mb-4">Mie ayam original ditambah dengan bakso sapi asli yang kenyal dan lezat.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-white">Rp 20.000</span>
+                                <button class="bg-gray-700 text-white py-2 px-4 rounded-full group-hover:bg-yellow-500 group-hover:text-gray-900 transition-colors">Pesan</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item Menu 3 -->
+                    <div class="bg-gray-900 rounded-lg overflow-hidden shadow-xl transform hover:-translate-y-2 transition-transform duration-300 group">
+                        <img src="https://placehold.co/600x400/111827/FFFFFF?text=Gambar+Mie+Ayam+Pangsit" alt="" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2 text-yellow-400">Mie Ayam Pangsit</h3>
+                            <p class="text-gray-400 mb-4">Dilengkapi dengan pangsit rebus isi ayam yang lembut dan gurih.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-white">Rp 18.000</span>
+                                <button class="bg-gray-700 text-white py-2 px-4 rounded-full group-hover:bg-yellow-500 group-hover:text-gray-900 transition-colors">Pesan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          BAGIAN TENTANG KAMI
+          Ganti src <img> dengan foto warung atau tim Anda.
+          Ukuran ideal: 800x600 pixels.
+        -->
+        <section id="tentang" class="py-20 bg-gray-900">
+            <div class="container mx-auto px-4">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="rounded-lg overflow-hidden">
+                        <img src="https://placehold.co/800x600/1f2937/FFFFFF?text=Ganti+dengan+Foto+Warung+Anda" alt="" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">Cerita di Balik Semangkuk Mie</h2>
+                        <p class="text-gray-400 mb-4 leading-relaxed">
+                            Warung kami berdiri sejak tahun 2010, berawal dari sebuah resep keluarga yang diwariskan secara turun-temurun. Kami percaya bahwa semangkuk mie ayam yang lezat dapat membawa kebahagiaan.
+                        </p>
+                        <p class="text-gray-400 leading-relaxed">
+                            Setiap hari, kami berkomitmen untuk menyajikan mie ayam dengan kualitas terbaik, menggunakan bahan baku segar dan tanpa pengawet. Kepuasan Anda adalah prioritas utama kami.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          BAGIAN KONTAK & LOKASI
+          1. Ganti informasi Alamat, Telepon, dan Jam Buka.
+          2. Ganti link `src` pada <iframe> dengan link Google Maps lokasi Anda.
+             - Buka Google Maps, cari lokasi Anda.
+             - Klik "Share" -> "Embed a map".
+             - Salin link `src` dari kode yang diberikan dan tempel di sini.
+        -->
+        <section id="kontak" class="py-20 bg-gray-800">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Kunjungi Kami</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto mb-10">Kami tunggu kedatangan Anda untuk menikmati semangkuk kehangatan dari kami.</p>
+
+                <div class="flex flex-col md:flex-row justify-center gap-8 md:gap-16 mb-12 text-left">
+                    <div class="flex items-center gap-4">
+                        <i data-lucide="map-pin" class="w-8 h-8 text-yellow-400"></i>
+                        <div>
+                            <h4 class="font-bold">Alamat</h4>
+                            <p class="text-gray-300">Jl. Kenangan Indah No. 12, Kota Bahagia</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <i data-lucide="phone" class="w-8 h-8 text-yellow-400"></i>
+                        <div>
+                            <h4 class="font-bold">Telepon</h4>
+                            <p class="text-gray-300">0812-3456-7890</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <i data-lucide="clock" class="w-8 h-8 text-yellow-400"></i>
+                        <div>
+                            <h4 class="font-bold">Jam Buka</h4>
+                            <p class="text-gray-300">Setiap Hari, 10:00 - 21:00 WIB</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="w-full h-96 rounded-lg overflow-hidden shadow-xl">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.474934522209!2d106.8249641750035!3d-6.200894993786801!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e945e34b9d%3A0x5371bf0fdad786a2!2sNational%20Monument!5e0!3m2!1sen!2sid!4v1700000000000!5m2!1sen!2sid" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 
+      FOOTER
+      Ganti `[Nama Brand Anda]` dan link sosial media (#) dengan milik Anda.
+    -->
+    <footer class="bg-black py-8">
+        <div class="container mx-auto px-4 text-center text-gray-400">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="#" class="hover:text-yellow-400 transition-colors"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+                <a href="#" class="hover:text-yellow-400 transition-colors"><i data-lucide="facebook" class="w-6 h-6"></i></a>
+                <a href="#" class="hover:text-yellow-400 transition-colors"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+            </div>
+            <p>&copy; 2025 [Nama Brand Anda]. Dibuat dengan sepenuh hati.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Inisialisasi Lucide Icons
+        lucide.createIcons();
+
+        // Script untuk menu mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Menutup menu mobile jika link di klik
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
