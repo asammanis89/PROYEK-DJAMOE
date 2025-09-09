@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Produk - Perdana Phone Store</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #111827;
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <!-- 
+      NAVIGASI / HEADER
+    -->
+    <header class="bg-gray-900 bg-opacity-80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center p-4">
+            <a href="index.html" class="text-2xl font-bold text-blue-500">Perdana Store</a>
+            <nav class="hidden md:flex space-x-6 items-center">
+                <a href="index.html#home" class="hover:text-blue-400 transition-colors">Beranda</a>
+                <a href="produk.html" class="text-blue-500 font-bold transition-colors">Produk</a>
+                <a href="index.html#tentang" class="hover:text-blue-400 transition-colors">Tentang Kami</a>
+                <a href="index.html#kontak" class="hover:text-blue-400 transition-colors">Kontak</a>
+            </nav>
+            <a href="index.html#kontak" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-full hover:bg-blue-500 transition-transform hover:scale-105">
+                Hubungi Kami
+            </a>
+            <!-- Tombol Menu Mobile -->
+            <button id="mobile-menu-button" class="md:hidden">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <!-- Menu Mobile (muncul saat tombol di klik) -->
+        <div id="mobile-menu" class="md:hidden hidden bg-gray-800 p-4">
+             <a href="index.html#home" class="block py-2 text-center hover:text-blue-400 transition-colors">Beranda</a>
+             <a href="produk.html" class="block py-2 text-center text-blue-500 font-bold transition-colors">Produk</a>
+             <a href="index.html#tentang" class="block py-2 text-center hover:text-blue-400 transition-colors">Tentang Kami</a>
+             <a href="index.html#kontak" class="block py-2 text-center hover:text-blue-400 transition-colors">Kontak</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- 
+          BAGIAN KATALOG PRODUK
+        -->
+        <section id="produk" class="py-20 bg-gray-800">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold">Katalog Produk</h2>
+                    <p class="text-gray-400 mt-2">Cari, filter, dan temukan gadget yang tepat untuk Anda.</p>
+                </div>
+
+                <!-- Filter dan Search Bar -->
+                <div class="mb-8 flex flex-col md:flex-row gap-4 justify-between items-center p-4 bg-gray-900 rounded-lg">
+                    <!-- Search -->
+                    <div class="relative w-full md:w-1/3">
+                        <input type="text" id="search-input" placeholder="Cari nama produk..." class="w-full bg-gray-700 border border-gray-600 rounded-full py-2 pl-10 pr-4 text-white focus:outline-none focus:border-blue-500 transition-colors">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                        </span>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <select id="brand-filter" class="bg-gray-700 border border-gray-600 rounded-full py-2 px-4 text-white focus:outline-none focus:border-blue-500 cursor-pointer">
+                            <option value="all">Semua Merek</option>
+                            <option value="Samsung">Samsung</option>
+                            <option value="Apple">Apple</option>
+                            <option value="Xiaomi">Xiaomi</option>
+                            <option value="Oppo">Oppo</option>
+                            <option value="Vivo">Vivo</option>
+                            <option value="Realme">Realme</option>
+                        </select>
+
+                        <select id="ram-filter" class="bg-gray-700 border border-gray-600 rounded-full py-2 px-4 text-white focus:outline-none focus:border-blue-500 cursor-pointer">
+                            <option value="all">Semua RAM</option>
+                            <option value="6">6 GB</option>
+                            <option value="8">8 GB</option>
+                            <option value="12">12 GB</option>
+                        </select>
+
+                        <select id="sort-by" class="bg-gray-700 border border-gray-600 rounded-full py-2 px-4 text-white focus:outline-none focus:border-blue-500 cursor-pointer">
+                            <option value="latest" selected>Urutkan: Terbaru</option>
+                            <option value="price-desc">Urutkan: Termahal</option>
+                            <option value="price-asc">Urutkan: Termurah</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Product Grid Container -->
+                <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Produk akan ditampilkan di sini oleh JavaScript -->
+                </div>
+                <div id="no-results" class="text-center text-gray-400 py-16 hidden">
+                    <i data-lucide="frown" class="w-16 h-16 mx-auto mb-4"></i>
+                    <h3 class="text-2xl font-bold">Produk tidak ditemukan</h3>
+                    <p>Coba ubah kata kunci pencarian atau filter Anda.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 
+      FOOTER
+    -->
+    <footer class="bg-black py-8">
+        <div class="container mx-auto px-4 text-center text-gray-400">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="#" class="hover:text-blue-400 transition-colors"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+                <a href="#" class="hover:text-blue-400 transition-colors"><i data-lucide="facebook" class="w-6 h-6"></i></a>
+                <a href="#" class="hover:text-blue-400 transition-colors"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+            </div>
+            <p>&copy; 2025 Perdana Phone Store. Solusi Gadget Terpercaya Anda.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts moved to the end for better performance -->
+    <script src="https://unpkg.com/lucide@latest/dist/lucide.min.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            // REVISI: Menempatkan inisialisasi ikon di dalam try-catch
+            // Ini mencegah error ikon menghentikan skrip lainnya.
+            try {
+                lucide.createIcons();
+            } catch (error) {
+                console.error("Gagal memuat ikon:", error);
+            }
+
+            // Script untuk menu mobile
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Data Produk
+            const products = [
+                { id: 1, name: 'Samsung Galaxy S23', price: 15500000, brand: 'Samsung', ram: 8, image: 'https://placehold.co/600x400/1f2937/FFFFFF?text=Galaxy+S23', addedDate: '2023-08-01', description: 'Flagship compac dengan performa luar biasa.' },
+                { id: 2, name: 'iPhone 15 Pro', price: 25000000, brand: 'Apple', ram: 8, image: 'https://placehold.co/600x400/1f2937/FFFFFF?text=iPhone+15+Pro', addedDate: '2023-09-15', description: 'Kamera sinematik dan chip A17 Bionic.' },
+                { id: 3, name: 'Xiaomi 13T', price: 6500000, brand: 'Xiaomi', ram: 12, image: 'https://placehold.co/600x400/1f2937/FFFFFF?text=Xiaomi+13T', addedDate: '2023-09-01', description: 'Kamera Leica untuk hasil foto menakjubkan.' },
+                { id: 4, name: 'Oppo Reno 10', price: 5900000, brand: 'Oppo', ram: 8, image: 'https://placehold.co/600x400/1f2937/FFFFFF?text=Oppo+Reno+10', addedDate: '2023-07-20', description: 'Desain elegan dengan kemampuan portrait handal.' },
+                { id: 5, name: 'Vivo V29', price: 6000000, brand: 'Vivo', ram: 12, image: 'https://placehold.co/600x400/1f2937/FFFFFF?text=Vivo+V29', addedDate: '2023-08-10', description: 'Aura light portrait untuk foto malam hari.' },
+                { id: 6, name: 'Realme GT Master', price: 4500000, brand: 'Realme', ram: 8, image: 'https://placehold.co/600x400/1f2937/FFFFFF?text=Realme+GT', addedDate: '2023-06-05', description: 'Performa gaming kencang dengan harga terjangkau.' },
+                { id: 7, name: 'Samsung Galaxy A54', price: 5500000, brand: 'Samsung', ram: 8, image: 'https://placehold.co/600x400/1f2937/FFFFFF?text=Galaxy+A54', addedDate: '2023-05-15', description: 'Smartphone mid-range serba bisa dari Samsung.' },
+                { id: 8, name: 'iPhone 14', price: 14000000, brand: 'Apple', ram: 6, image: 'https://placehold.co/600x400/1f2937/FFFFFF?text=iPhone+14', addedDate: '2022-09-20', description: 'Keseimbangan sempurna antara harga dan fitur.' },
+                { id: 9, name: 'Xiaomi Poco F5', price: 5000000, brand: 'Xiaomi', ram: 12, image: 'https://placehold.co/600x400/1f2937/FFFFFF?text=Poco+F5', addedDate: '2023-07-01', description: 'Snapdragon 7+ Gen 2 untuk performa ekstrem.' },
+                { id: 10, name: 'Realme 10', price: 3200000, brand: 'Realme', ram: 6, image: 'https://placehold.co/600x400/1f2937/FFFFFF?text=Realme+10', addedDate: '2023-02-10', description: 'Layar Super AMOLED 90Hz untuk visual mulus.' }
+            ];
+
+            // Elemen DOM
+            const productGrid = document.getElementById('product-grid');
+            const noResultsDiv = document.getElementById('no-results');
+            const searchInput = document.getElementById('search-input');
+            const brandFilter = document.getElementById('brand-filter');
+            const ramFilter = document.getElementById('ram-filter');
+            const sortBy = document.getElementById('sort-by');
+
+            // REVISI & KOMPRES: Fungsi displayProducts dibuat lebih efisien.
+            // Kode ini membangun semua HTML kartu produk terlebih dahulu,
+            // lalu menampilkannya sekaligus untuk performa yang lebih baik.
+            function displayProducts(productsToDisplay) {
+                if (productsToDisplay.length === 0) {
+                    productGrid.classList.add('hidden');
+                    noResultsDiv.classList.remove('hidden');
+                } else {
+                    productGrid.classList.remove('hidden');
+                    noResultsDiv.classList.add('hidden');
+                    
+                    const productsHTML = productsToDisplay.map(product => {
+                        const priceFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(product.price);
+                        
+                        return `
+                            <div class="bg-gray-900 rounded-lg overflow-hidden shadow-xl transform hover:-translate-y-2 transition-transform duration-300 group">
+                                <img src="${product.image}" alt="${product.name}" class="w-full h-56 object-cover">
+                                <div class="p-6">
+                                    <h3 class="text-2xl font-bold mb-2 text-blue-500">${product.name}</h3>
+                                    <p class="text-gray-400 mb-4 h-12">${product.description}</p>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-xl font-bold text-white">${priceFormatted}</span>
+                                        <button class="bg-gray-700 text-white py-2 px-4 rounded-full group-hover:bg-blue-600 group-hover:text-white transition-colors">Lihat Detail</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    productGrid.innerHTML = productsHTML;
+                }
+            }
+
+            // Fungsi utama untuk memfilter dan menampilkan produk
+            function updateProducts() {
+                let filteredProducts = [...products];
+
+                // Filter berdasarkan pencarian
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                if (searchTerm) {
+                    filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(searchTerm));
+                }
+                
+                // Filter berdasarkan merek
+                const selectedBrand = brandFilter.value;
+                if (selectedBrand !== 'all') {
+                    filteredProducts = filteredProducts.filter(p => p.brand === selectedBrand);
+                }
+                
+                // Filter berdasarkan RAM
+                const selectedRam = ramFilter.value;
+                if (selectedRam !== 'all') {
+                    filteredProducts = filteredProducts.filter(p => p.ram == selectedRam);
+                }
+                
+                // Urutkan produk
+                const sortByValue = sortBy.value;
+                if (sortByValue === 'price-asc') {
+                    filteredProducts.sort((a, b) => a.price - b.price);
+                } else if (sortByValue === 'price-desc') {
+                    filteredProducts.sort((a, b) => b.price - a.price);
+                } else if (sortByValue === 'latest') {
+                    filteredProducts.sort((a, b) => new Date(b.addedDate) - new Date(a.addedDate));
+                }
+                
+                displayProducts(filteredProducts);
+            }
+
+            // Menambahkan event listener ke semua input filter
+            [searchInput, brandFilter, ramFilter, sortBy].forEach(element => {
+                element.addEventListener('input', updateProducts);
+            });
+
+            // Tampilkan produk saat halaman pertama kali dimuat
+            updateProducts();
+        });
+    </script>
+</body>
+</html>
+
