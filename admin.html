@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dasbor Manajemen Admin Modern</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // Konfigurasi Tailwind CSS untuk menambahkan warna kustom
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#154424', // Warna hijau tua
+                        'accent': '#E6D793',  // Warna emas/kuning
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Custom scrollbar yang lebih modern */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c5c5c5; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+
+        /* Transisi untuk pergantian halaman */
+        .page-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+        .page-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .page-content.leaving {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        /* Transisi untuk sidebar mobile */
+        #sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        /* --- LOGIKA ANIMASI SIDEBAR DIPERBAIKI --- */
+        #sidebar .nav-link {
+            /* State default untuk mobile: disembunyikan untuk animasi masuk */
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+
+        /* Di desktop, selalu tampilkan menu */
+        @media (min-width: 768px) {
+            #sidebar .nav-link {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Di mobile, HANYA tampilkan menu saat sidebar tidak disembunyikan */
+        #sidebar:not(.-translate-x-full) .nav-link {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* Animasi berurutan saat sidebar mobile terbuka */
+        #sidebar:not(.-translate-x-full) .nav-link:nth-child(2) { transition-delay: 50ms; }
+        #sidebar:not(.-translate-x-full) .nav-link:nth-child(3) { transition-delay: 100ms; }
+        #sidebar:not(.-translate-x-full) .nav-link:nth-child(4) { transition-delay: 150ms; }
+        /* --- AKHIR PERBAIKAN --- */
+
+
+        /* Animasi Modal yang Diperbaiki */
+        .modal-container {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-container.is-open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            transform: scale(0.95);
+            opacity: 0;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .modal-container.is-open .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* Scroll-triggered animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition-delay: var(--delay, 0s);
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #notification {
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <div class="flex h-screen bg-slate-50 text-slate-800">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen bg-primary text-white shadow-2xl transform -translate-x-full md:relative md:translate-x-0">
+            <div class="p-6 flex justify-between items-center border-b border-white/10">
+                <a href="#" class="text-2xl font-bold text-accent">Admin Panel</a>
+                <button id="sidebar-close-btn" class="text-gray-300 hover:text-white md:hidden">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            <nav class="mt-6">
+                <a class="nav-link flex items-center px-6 py-3 text-gray-200" href="#utama">
+                    <i class="fas fa-home w-6"></i>
+                    <span class="mx-3">Halaman Utama</span>
+                </a>
+                <a class="nav-link flex items-center px-6 py-3 mt-2 text-gray-300 hover:bg-white/10 hover:text-white rounded-lg mx-2" href="#produk">
+                    <i class="fas fa-box-open w-6"></i>
+                    <span class="mx-3">Produk</span>
+                </a>
+                <a class="nav-link flex items-center px-6 py-3 mt-2 text-gray-300 hover:bg-white/10 hover:text-white rounded-lg mx-2" href="#artikel">
+                    <i class="fas fa-newspaper w-6"></i>
+                    <span class="mx-3">Artikel</span>
+                </a>
+                <a class="nav-link flex items-center px-6 py-3 mt-2 text-gray-300 hover:bg-white/10 hover:text-white rounded-lg mx-2" href="#outlet">
+                    <i class="fas fa-store w-6"></i>
+                    <span class="mx-3">Outlet</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Sidebar Overlay -->
+        <div id="sidebar-overlay" class="fixed inset-0 z-30 bg-black bg-opacity-60 hidden md:hidden"></div>
+
+        <div class="flex flex-col flex-1 overflow-y-auto">
+            <!-- Header -->
+            <header class="flex items-center justify-between p-4 bg-white border-b border-slate-200 shadow-sm sticky top-0 z-20">
+                <div class="flex items-center">
+                    <button id="sidebar-toggle" class="text-slate-500 focus:outline-none md:hidden">
+                        <i class="fas fa-bars fa-lg"></i>
+                    </button>
+                    <h1 id="page-title" class="ml-4 text-xl font-semibold text-primary">Halaman Utama</h1>
+                </div>
+                <div>
+                    <span class="text-slate-600">Selamat Datang, Admin!</span>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-4 sm:p-6 relative">
+                 <!-- Custom Notification -->
+                <div id="notification" class="hidden fixed top-20 right-6 bg-red-500 text-white py-3 px-5 rounded-lg shadow-lg z-50 transform translate-x-full">
+                    <!-- Message here -->
+                </div>
+                
+                <!-- Page: Halaman Utama -->
+                <div id="page-utama" class="page-content">
+                    <div class="bg-white p-6 rounded-xl shadow-lg mb-6 animate-on-scroll">
+                        <h2 class="text-xl font-semibold mb-4 text-primary">Display Unggulan</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <!-- Display Item -->
+                            <div id="display-1" class="border border-slate-200 p-4 rounded-lg text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate-on-scroll" style="--delay: 0.1s;">
+                                <img src="https://placehold.co/400x300/E6D793/154424?text=Display+1" class="w-full h-32 object-cover rounded-md mb-3">
+                                <h3 class="font-semibold text-slate-800">Judul Display 1</h3>
+                                <p class="text-sm text-slate-500 mb-3">Deskripsi singkat display.</p>
+                                <button onclick="editDisplay(1)" class="w-full bg-primary text-white py-2 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 active:scale-95">Ubah</button>
+                            </div>
+                             <div id="display-2" class="border border-slate-200 p-4 rounded-lg text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate-on-scroll" style="--delay: 0.2s;">
+                                <img src="https://placehold.co/400x300/E6D793/154424?text=Display+2" class="w-full h-32 object-cover rounded-md mb-3">
+                                <h3 class="font-semibold text-slate-800">Judul Display 2</h3>
+                                <p class="text-sm text-slate-500 mb-3">Deskripsi singkat display.</p>
+                                <button onclick="editDisplay(2)" class="w-full bg-primary text-white py-2 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 active:scale-95">Ubah</button>
+                            </div>
+                             <div id="display-3" class="border border-slate-200 p-4 rounded-lg text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate-on-scroll" style="--delay: 0.3s;">
+                                <img src="https://placehold.co/400x300/E6D793/154424?text=Display+3" class="w-full h-32 object-cover rounded-md mb-3">
+                                <h3 class="font-semibold text-slate-800">Judul Display 3</h3>
+                                <p class="text-sm text-slate-500 mb-3">Deskripsi singkat display.</p>
+                                <button onclick="editDisplay(3)" class="w-full bg-primary text-white py-2 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 active:scale-95">Ubah</button>
+                            </div>
+                             <div id="display-4" class="border border-slate-200 p-4 rounded-lg text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1 animate-on-scroll" style="--delay: 0.4s;">
+                                <img src="https://placehold.co/400x300/E6D793/154424?text=Display+4" class="w-full h-32 object-cover rounded-md mb-3">
+                                <h3 class="font-semibold text-slate-800">Judul Display 4</h3>
+                                <p class="text-sm text-slate-500 mb-3">Deskripsi singkat display.</p>
+                                <button onclick="editDisplay(4)" class="w-full bg-primary text-white py-2 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 active:scale-95">Ubah</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg animate-on-scroll" style="--delay: 0.2s;">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-semibold text-primary">Daftar Klien</h2>
+                            <button onclick="openModal('clientModal')" class="bg-accent text-primary font-semibold px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-sm">Tambah Klien</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-slate-50 border-b border-slate-200">
+                                    <tr>
+                                        <th class="p-4 font-semibold">Logo</th>
+                                        <th class="p-4 font-semibold">Nama Klien</th>
+                                        <th class="p-4 font-semibold">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="client-list">
+                                    <tr class="border-b border-slate-200" data-id="client-1">
+                                        <td class="p-4"><img src="https://placehold.co/100x50/154424/E6D793?text=Klien+A" class="h-10 rounded"></td>
+                                        <td class="p-4">Klien A</td>
+                                        <td class="p-4">
+                                            <button class="text-blue-500 hover:text-blue-700 mr-3 transition-transform hover:scale-110" onclick="editClient(this)"><i class="fas fa-edit fa-lg"></i></button>
+                                            <button class="text-red-500 hover:text-red-700 transition-transform hover:scale-110" onclick="this.closest('tr').remove()"><i class="fas fa-trash fa-lg"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page: Produk -->
+                <div id="page-produk" class="page-content">
+                     <div class="bg-white p-6 rounded-xl shadow-lg animate-on-scroll">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-semibold text-primary">Daftar Produk</h2>
+                            <button onclick="openModal('productModal')" class="bg-accent text-primary font-semibold px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-sm">Tambah Produk</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                               <thead class="bg-slate-50 border-b border-slate-200">
+                                    <tr>
+                                        <th class="p-4 font-semibold">Gambar</th>
+                                        <th class="p-4 font-semibold">Nama Produk</th>
+                                        <th class="p-4 font-semibold">Deskripsi</th>
+                                        <th class="p-4 font-semibold">Kategori</th>
+                                        <th class="p-4 font-semibold">Harga</th>
+                                        <th class="p-4 font-semibold">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="product-list">
+                                    <tr class="border-b border-slate-200" data-id="product-1">
+                                        <td class="p-4"><img src="https://placehold.co/100x100/154424/E6D793?text=Kopi" class="h-16 w-16 object-cover rounded-md"></td>
+                                        <td class="p-4">Produk Kopi Mantap</td>
+                                        <td class="p-4 text-sm text-slate-600 max-w-xs truncate" title="Ini adalah deskripsi lengkap dari produk kopi mantap yang sangat nikmat.">Ini adalah deskripsi...</td>
+                                        <td class="p-4">Siap Minum</td>
+                                        <td class="p-4">25000</td>
+                                        <td class="p-4">
+                                            <button class="text-blue-500 hover:text-blue-700 mr-3 transition-transform hover:scale-110" onclick="editProduct(this)"><i class="fas fa-edit fa-lg"></i></button>
+                                            <button class="text-red-500 hover:text-red-700 transition-transform hover:scale-110" onclick="this.closest('tr').remove()"><i class="fas fa-trash fa-lg"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page: Artikel -->
+                <div id="page-artikel" class="page-content">
+                    <div class="mb-8 animate-on-scroll">
+                        <h2 class="text-2xl font-bold text-primary mb-4">Artikel Populer</h2>
+                        <div id="pinned-article-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                             <div class="bg-slate-100 p-4 rounded-lg flex items-center justify-center border-2 border-dashed border-slate-300 h-full min-h-[200px] sample-pinned">
+                                <p class="text-center text-slate-500">Belum ada artikel yang dipin.</p>
+                            </div>
+                             <div class="bg-slate-100 p-4 rounded-lg items-center justify-center border-2 border-dashed border-slate-300 h-full min-h-[200px] sample-pinned hidden md:flex">
+                                 <p class="text-center text-slate-500">Slot Pin Kosong</p>
+                            </div>
+                             <div class="bg-slate-100 p-4 rounded-lg items-center justify-center border-2 border-dashed border-slate-300 h-full min-h-[200px] sample-pinned hidden lg:flex">
+                                 <p class="text-center text-slate-500">Slot Pin Kosong</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-lg animate-on-scroll" style="--delay: 0.2s;">
+                        <div class="flex flex-wrap justify-between items-center mb-4 gap-4">
+                            <h2 class="text-xl font-semibold text-primary">Semua Artikel</h2>
+                            <button onclick="openModal('articleModal')" class="bg-accent text-primary font-semibold px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-sm">Tambah Artikel Baru</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-slate-50 border-b border-slate-200">
+                                    <tr>
+                                        <th class="p-4 font-semibold">Gambar</th>
+                                        <th class="p-4 font-semibold">Judul Artikel</th>
+                                        <th class="p-4 font-semibold">Deskripsi</th>
+                                        <th class="p-4 font-semibold">Tanggal</th>
+                                        <th class="p-4 font-semibold">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="article-list">
+                                    <tr class="border-b border-slate-200" data-id="article-1">
+                                        <td class="p-4"><img src="https://placehold.co/150x100/154424/E6D793?text=Artikel" class="h-16 w-24 object-cover rounded-md"></td>
+                                        <td class="p-4 font-semibold">Cara Membuat Kopi Enak</td>
+                                        <td class="p-4 text-sm text-slate-600 max-w-xs truncate" title="Deskripsi singkat tentang bagaimana cara membuat kopi yang enak dan nikmat di rumah...">Deskripsi singkat tentang bagaimana cara...</td>
+                                        <td class="p-4">01-01-2024</td>
+                                        <td class="p-4 whitespace-nowrap">
+                                            <button title="Pin Artikel" class="text-slate-400 hover:text-accent mr-3 transition-colors" onclick="togglePin(this)"><i class="fas fa-thumbtack fa-lg"></i></button>
+                                            <button title="Edit" class="text-blue-500 hover:text-blue-700 mr-3 transition-transform hover:scale-110" onclick="editArticle(this)"><i class="fas fa-edit fa-lg"></i></button>
+                                            <button title="Hapus" class="text-red-500 hover:text-red-700 transition-transform hover:scale-110" onclick="deleteArticle(this)"><i class="fas fa-trash fa-lg"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page: Outlet -->
+                <div id="page-outlet" class="page-content">
+                    <div class="bg-white p-6 rounded-xl shadow-lg animate-on-scroll">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-semibold text-primary">Daftar Outlet</h2>
+                            <button onclick="openModal('outletModal')" class="bg-accent text-primary font-semibold px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-sm">Tambah Outlet</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-slate-50 border-b border-slate-200">
+                                    <tr>
+                                        <th class="p-4 font-semibold">Gambar</th>
+                                        <th class="p-4 font-semibold">Nama Outlet</th>
+                                        <th class="p-4 font-semibold">Alamat</th>
+                                        <th class="p-4 font-semibold">Kategori</th>
+                                        <th class="p-4 font-semibold">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="outlet-list">
+                                    <tr class="border-b border-slate-200" data-id="outlet-1">
+                                        <td class="p-4"><img src="https://placehold.co/150x100/154424/E6D793?text=Outlet" class="h-16 w-24 object-cover rounded-md"></td>
+                                        <td class="p-4">Warung Kopi Jaya</td>
+                                        <td class="p-4">Jl. Merdeka No. 10, Madiun</td>
+                                        <td class="p-4">Madiun</td>
+                                        <td class="p-4">
+                                            <button class="text-blue-500 hover:text-blue-700 mr-3 transition-transform hover:scale-110" onclick="editOutlet(this)"><i class="fas fa-edit fa-lg"></i></button>
+                                            <button class="text-red-500 hover:text-red-700 transition-transform hover:scale-110" onclick="this.closest('tr').remove()"><i class="fas fa-trash fa-lg"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- All Modals -->
+    <div id="displayModal" class="modal-container fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black bg-opacity-60" onclick="closeModal('displayModal')"></div>
+        <div class="modal-content relative bg-white rounded-xl shadow-2xl w-11/12 md:w-1/3 p-6">
+            <h2 class="text-xl font-bold mb-6 text-primary">Ubah Display Unggulan</h2>
+            <form id="displayForm" class="space-y-4">
+                <input type="hidden" id="displayId">
+                <div>
+                    <label for="displayTitle" class="block text-sm font-medium text-slate-700">Judul</label>
+                    <input type="text" id="displayTitle" class="w-full p-2 border border-slate-300 rounded-lg mt-1 focus:ring-accent focus:border-accent">
+                </div>
+                <div>
+                    <label for="displayDesc" class="block text-sm font-medium text-slate-700">Deskripsi</label>
+                    <textarea id="displayDesc" rows="3" class="w-full p-2 border border-slate-300 rounded-lg mt-1 focus:ring-accent focus:border-accent"></textarea>
+                </div>
+                 <div>
+                    <label for="displayImage" class="block text-sm font-medium text-slate-700">Gambar</label>
+                    <input type="file" id="displayImage" class="w-full p-2 border border-slate-300 rounded-lg mt-1 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-accent/20 file:text-primary hover:file:bg-accent/30" accept="image/*">
+                    <img id="displayImagePreview" class="mt-4 h-32 w-auto rounded-lg hidden" src="" alt="Image Preview">
+                </div>
+                <div class="flex justify-end pt-4 space-x-2">
+                    <button type="button" onclick="closeModal('displayModal')" class="bg-slate-200 text-slate-800 px-4 py-2 rounded-lg hover:bg-slate-300 transition">Batal</button>
+                    <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition active:scale-95">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Client -->
+    <div id="clientModal" class="modal-container fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black bg-opacity-60" onclick="closeModal('clientModal')"></div>
+        <div class="modal-content relative bg-white rounded-xl shadow-2xl w-11/12 md:w-1/3 p-6">
+            <h2 id="clientModalTitle" class="text-xl font-bold mb-6 text-primary">Tambah Klien Baru</h2>
+            <form id="clientForm" class="space-y-4">
+                <input type="hidden" id="editClientId">
+                <div>
+                    <label for="clientName" class="block text-sm font-medium text-slate-700">Nama Klien</label>
+                    <input type="text" id="clientName" class="w-full p-2 border border-slate-300 rounded-lg mt-1 focus:ring-accent focus:border-accent" required>
+                </div>
+                <div>
+                    <label for="clientLogo" class="block text-sm font-medium text-slate-700">Logo Klien</label>
+                    <input type="file" id="clientLogo" class="w-full p-2 border border-slate-300 rounded-lg mt-1 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-accent/20 file:text-primary hover:file:bg-accent/30" accept="image/*">
+                    <img id="clientLogoPreview" class="mt-4 h-20 w-auto rounded-lg hidden" src="" alt="Logo Preview">
+                </div>
+                <div class="flex justify-end pt-4 space-x-2">
+                    <button type="button" onclick="closeModal('clientModal')" class="bg-slate-200 text-slate-800 px-4 py-2 rounded-lg hover:bg-slate-300 transition">Batal</button>
+                    <button type="submit" class="bg-accent text-primary font-semibold px-4 py-2 rounded-lg hover:bg-opacity-90 transition active:scale-95">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modals for Product, Article, Outlet -->
+    <div id="productModal" class="modal-container fixed inset-0 z-50 flex items-center justify-center p-4">
+         <div class="absolute inset-0 bg-black bg-opacity-60" onclick="closeModal('productModal')"></div>
+        <div class="modal-content relative bg-white rounded-xl shadow-2xl w-11/12 md:w-1/3 p-6 max-h-[90vh] overflow-y-auto">
+            <h2 id="productModalTitle" class="text-xl font-bold mb-6 text-primary">Tambah Produk Baru</h2>
+            <form id="productForm" class="space-y-4">
+                 <input type="hidden" id="editProductId">
+                <div>
+                    <label for="productName" class="block text-sm font-medium text-slate-700">Nama Produk</label>
+                    <input type="text" id="productName" class="w-full p-2 border border-slate-300 rounded-lg mt-1 focus:ring-accent focus:border-accent" required>
+                </div>
+                 <div>
+                     <label for="productCategory" class="block text-sm font-medium text-slate-700">Kategori</label>
+                    <select id="productCategory" class="w-full p-2 border border-slate-300 rounded-lg mt-1 focus:ring-accent focus:border-accent" required>
+                        <option value="Kering">Kering</option>
+                        <option value="Sirup">Sirup</option>
+                        <option value="Siap Minum">Siap Minum</option>
+                        <option value="Paket Box">Paket Box</option>
+                        <option value="Paket Literan">Paket Literan</option>
+                        <option value="Paket Custom">Paket Custom</option>
+                        <option value="Class">Class</option>
+                    </select>
+                </div>
+                <div>
+                     <label for="productDescription" class="block text-sm font-medium text-slate-700">Deskripsi</label>
+                    <textarea id="productDescription" rows="5" class="w-full p-2 border border-slate-300 rounded-lg mt-1 focus:ring-accent focus:border-accent" required></textarea>
+                </div>
+                 <div>
+                     <label for="productPrice" class="block text-sm font-medium text-slate-700">Harga</label>
+                    <input type="number" id="productPrice" class="w-full p-2 border border-slate-300 rounded-lg mt-1 focus:ring-accent focus:border-accent" required>
+                </div>
+                 <div>
+                     <label for="productImage" class="block text-sm font-medium text-slate-700">Gambar Produk</label>
+                    <input type="file" id="productImage" class="w-full p-2 border border-slate-300 rounded-lg mt-1 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-accent/20 file:text-primary hover:file:bg-accent/30" accept="image/*">
+                    <img id="productImagePreview" class="mt-4 h-20 w-auto rounded-lg hidden" src="" alt="Product Preview">
+                </div>
+                <div class="flex justify-end pt-4 space-x-2">
+                    <button type="button" onclick="closeModal('productModal')" class="bg-slate-200 text-slate-800 px-4 py-2 rounded-lg hover:bg-slate-300 transition">Batal</button>
+                    <button type="submit" class="bg-accent text-primary font-semibold px-4 py-2 rounded-lg hover:bg-opacity-90 transition active:scale-95">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="articleModal" class="modal-container fixed inset-0 z-50 flex items-center justify-center p-4">
+         <div class="absolute inset-0 bg-black bg-opacity-60" onclick="closeModal('articleModal')"></div>
+        <div class="modal-content relative bg-white rounded-xl shadow-2xl w-11/12 md:w-1/3 p-6 max-h-[90vh] overflow-y-auto">
+            <h2 id="articleModalTitle" class="text-xl font-bold mb-6 text-primary">Tambah Artikel Baru</h2>
+            <form id="articleForm" class="space-y-4">
+                 <input type="hidden" id="editArticleId">
+                <div>
+                    <label for="articleTitle" class="block text-sm font-medium text-slate-700">Judul Artikel</label>
+                    <input type="text" id="articleTitle" class="w-full p-2 border border-slate-300 rounded-lg mt-1 focus:ring-accent focus:border-accent" required>
+                </div>
+                <div>
+                     <label for="articleDescription" class="block text-sm font-medium text-slate-700">Konten Artikel</label>
+                    <textarea id="articleDescription" rows="8" class="w-full p-2 border border-slate-300 rounded-lg mt-1 focus:ring-accent focus:border-accent" required></textarea>
+                </div>
+                 <div>
+                     <label for="articleImage" class="block text-sm font-medium text-slate-700">Gambar Artikel</label>
+                    <input type="file" id="articleImage" class="w-full p-2 border border-slate-300 rounded-lg mt-1 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-accent/20 file:text-primary hover:file:bg-accent/30" accept="image/*">
+                    <img id="articleImagePreview" class="mt-4 h-32 w-auto rounded-lg hidden" src="" alt="Article Preview">
+                </div>
+                <div class="flex justify-end pt-4 space-x-2">
+                    <button type="button" onclick="closeModal('articleModal')" class="bg-slate-200 text-slate-800 px-4 py-2 rounded-lg hover:bg-slate-300 transition">Batal</button>
+                    <button type="submit" class="bg-accent text-primary font-semibold px-4 py-2 rounded-lg hover:bg-opacity-90 transition active:scale-95">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="outletModal" class="modal-container fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black bg-opacity-60" onclick="closeModal('outletModal')"></div>
+        <div class="modal-content relative bg-white rounded-xl shadow-2xl w-11/12 md:w-1/3 p-6 max-h-[90vh] overflow-y-auto">
+            <h2 id="outletModalTitle" class="text-xl font-bold mb-6 text-primary">Tambah Outlet Baru</h2>
+            <form id="outletForm" class="space-y-4">
+                <input type="hidden" id="editOutletId">
+                <div>
+                    <label for="outletName" class="block text-sm font-medium text-slate-700">Nama Outlet</label>
+                    <input type="text" id="outletName" class="w-full p-2 border border-slate-300 rounded-lg mt-1 focus:ring-accent focus:border-accent" required>
+                </div>
+                <div>
+                    <label for="outletCategory" class="block text-sm font-medium text-slate-700">Kategori</label>
+                    <select id="outletCategory" class="w-full p-2 border border-slate-300 rounded-lg mt-1 focus:ring-accent focus:border-accent" required>
+                        <option value="Madiun">Madiun</option>
+                        <option value="Surabaya">Surabaya</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="outletAddress" class="block text-sm font-medium text-slate-700">Alamat</label>
+                    <textarea id="outletAddress" rows="3" class="w-full p-2 border border-slate-300 rounded-lg mt-1 focus:ring-accent focus:border-accent" required></textarea>
+                </div>
+                <div>
+                    <label for="outletImage" class="block text-sm font-medium text-slate-700">Gambar Outlet</label>
+                    <input type="file" id="outletImage" class="w-full p-2 border border-slate-300 rounded-lg mt-1 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-accent/20 file:text-primary hover:file:bg-accent/30" accept="image/*">
+                    <img id="outletImagePreview" class="mt-4 h-32 w-auto rounded-lg hidden" src="" alt="Outlet Preview">
+                </div>
+                <div class="flex justify-end pt-4 space-x-2">
+                    <button type="button" onclick="closeModal('outletModal')" class="bg-slate-200 text-slate-800 px-4 py-2 rounded-lg hover:bg-slate-300 transition">Batal</button>
+                    <button type="submit" class="bg-accent text-primary font-semibold px-4 py-2 rounded-lg hover:bg-opacity-90 transition active:scale-95">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DOM Element Selection ---
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pageContents = document.querySelectorAll('.page-content');
+            const pageTitle = document.getElementById('page-title');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+
+            // --- Intersection Observer for Animations ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            // --- Helper Functions ---
+            
+            function openSidebar() {
+                sidebar.classList.remove('-translate-x-full');
+                sidebarOverlay.classList.remove('hidden');
+            }
+
+            function closeSidebar() {
+                sidebar.classList.add('-translate-x-full');
+                sidebarOverlay.classList.add('hidden');
+            }
+
+            let isTransitioning = false;
+            function showPage(hash) {
+                if (isTransitioning) return;
+                isTransitioning = true;
+                
+                const targetPage = document.querySelector('#page-' + hash.substring(1));
+                if (!targetPage) { isTransitioning = false; return; }
+                
+                const currentPage = document.querySelector('.page-content.active');
+
+                if (currentPage) {
+                    currentPage.classList.add('leaving');
+                    setTimeout(() => {
+                        currentPage.classList.remove('active', 'leaving');
+                        targetPage.classList.add('active');
+                        targetPage.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+                        
+                        navLinks.forEach(link => link.classList.remove('bg-white/10', 'text-white'));
+                        navLinks.forEach(link => link.classList.add('text-gray-300'));
+                        
+                        const activeLink = document.querySelector(`.nav-link[href="${hash}"]`);
+                        if(activeLink) {
+                            activeLink.classList.add('bg-white/10', 'text-white');
+                            activeLink.classList.remove('text-gray-300');
+                        }
+
+                        pageTitle.textContent = activeLink ? activeLink.querySelector('span').textContent : 'Dasbor';
+                        if (window.innerWidth < 768) { closeSidebar(); }
+                        
+                        setTimeout(() => { isTransitioning = false; }, 50);
+                    }, 400); 
+                } else {
+                    targetPage.classList.add('active');
+                    targetPage.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+                    const activeLink = document.querySelector(`.nav-link[href="${hash}"]`);
+                     if(activeLink) {
+                        activeLink.classList.add('bg-white/10', 'text-white');
+                        activeLink.classList.remove('text-gray-300');
+                    }
+                    isTransitioning = false;
+                }
+            }
+            
+            // --- Global Functions for inline onclick ---
+            window.openModal = (modalId) => {
+                const modal = document.getElementById(modalId);
+                if (!modal) return;
+                const form = modal.querySelector('form');
+                if(form) form.reset();
+                modal.querySelectorAll('img[id$="Preview"]').forEach(img => img.classList.add('hidden'));
+                if (modalId === 'clientModal') document.getElementById('clientModalTitle').textContent = 'Tambah Klien Baru';
+                if (modalId === 'productModal') document.getElementById('productModalTitle').textContent = 'Tambah Produk Baru';
+                if (modalId === 'articleModal') document.getElementById('articleModalTitle').textContent = 'Tambah Artikel Baru';
+                if (modalId === 'outletModal') document.getElementById('outletModalTitle').textContent = 'Tambah Outlet Baru';
+                modal.classList.add('is-open');
+            };
+
+            window.closeModal = (modalId) => {
+                const modal = document.getElementById(modalId);
+                if (!modal) return;
+                modal.classList.remove('is-open');
+            };
+
+            window.editDisplay = (id) => {
+                const displayElement = document.getElementById(`display-${id}`);
+                document.getElementById('displayId').value = id;
+                document.getElementById('displayTitle').value = displayElement.querySelector('h3').textContent;
+                document.getElementById('displayDesc').value = displayElement.querySelector('p').textContent;
+                const preview = document.getElementById('displayImagePreview');
+                preview.src = displayElement.querySelector('img').src;
+                preview.classList.remove('hidden');
+                window.openModal('displayModal');
+            };
+
+            window.editClient = (button) => {
+                 const row = button.closest('tr');
+                 document.getElementById('editClientId').value = row.dataset.id;
+                 document.getElementById('clientName').value = row.querySelector('td:nth-child(2)').textContent;
+                 const preview = document.getElementById('clientLogoPreview');
+                 preview.src = row.querySelector('img').src;
+                 preview.classList.remove('hidden');
+                 document.getElementById('clientModalTitle').textContent = 'Ubah Klien';
+                 window.openModal('clientModal');
+            };
+
+            window.editProduct = (button) => {
+                const row = button.closest('tr');
+                document.getElementById('editProductId').value = row.dataset.id;
+                document.getElementById('productName').value = row.querySelector('td:nth-child(2)').textContent;
+                document.getElementById('productDescription').value = row.querySelector('td:nth-child(3)').title;
+                document.getElementById('productCategory').value = row.querySelector('td:nth-child(4)').textContent;
+                document.getElementById('productPrice').value = row.querySelector('td:nth-child(5)').textContent.replace(/[^0-9]/g, '');
+                const preview = document.getElementById('productImagePreview');
+                preview.src = row.querySelector('img').src;
+                preview.classList.remove('hidden');
+                document.getElementById('productModalTitle').textContent = 'Ubah Produk';
+                window.openModal('productModal');
+            };
+
+            window.editArticle = (button) => {
+                const row = button.closest('tr');
+                document.getElementById('editArticleId').value = row.dataset.id;
+                document.getElementById('articleTitle').value = row.querySelector('td:nth-child(2)').textContent;
+                document.getElementById('articleDescription').value = row.querySelector('td:nth-child(3)').title;
+                const preview = document.getElementById('articleImagePreview');
+                preview.src = row.querySelector('img').src;
+                preview.classList.remove('hidden');
+                document.getElementById('articleModalTitle').textContent = 'Ubah Artikel';
+                window.openModal('articleModal');
+            };
+
+            window.editOutlet = (button) => {
+                const row = button.closest('tr');
+                document.getElementById('editOutletId').value = row.dataset.id;
+                document.getElementById('outletName').value = row.querySelector('td:nth-child(2)').textContent;
+                document.getElementById('outletAddress').value = row.querySelector('td:nth-child(3)').textContent;
+                document.getElementById('outletCategory').value = row.querySelector('td:nth-child(4)').textContent;
+                const preview = document.getElementById('outletImagePreview');
+                preview.src = row.querySelector('img').src;
+                preview.classList.remove('hidden');
+                document.getElementById('outletModalTitle').textContent = 'Ubah Outlet';
+                window.openModal('outletModal');
+            };
+
+            window.showNotification = (message) => {
+                const notification = document.getElementById('notification');
+                notification.textContent = message;
+                notification.classList.remove('hidden', 'translate-x-full');
+                setTimeout(() => {
+                    notification.classList.add('translate-x-full');
+                    setTimeout(() => { notification.classList.add('hidden'); }, 500);
+                }, 3000);
+            };
+
+            const updatePinnedPlaceholder = () => {
+                const pinnedContainer = document.getElementById('pinned-article-list');
+                const pinnedCount = pinnedContainer.querySelectorAll('.pinned-card').length;
+                const placeholders = pinnedContainer.querySelectorAll('.sample-pinned');
+                if (pinnedCount > 0) {
+                    placeholders.forEach(p => p.style.display = 'none');
+                } else {
+                    placeholders.forEach(p => p.style.display = 'flex');
+                }
+            };
+            
+            window.togglePin = (button) => {
+                const row = button.closest('tr');
+                const articleId = row.dataset.id;
+                const pinnedContainer = document.getElementById('pinned-article-list');
+                const existingPin = document.querySelector(`.pinned-card[data-id="${articleId}"]`);
+                if (existingPin) {
+                    existingPin.remove();
+                    button.classList.remove('text-accent');
+                    button.classList.add('text-slate-400');
+                } else {
+                    if (pinnedContainer.querySelectorAll('.pinned-card').length >= 3) {
+                        showNotification('Anda hanya dapat memin 3 artikel populer.');
+                        return;
+                    }
+                    const imgSrc = row.querySelector('img').src;
+                    const title = row.querySelector('td:nth-child(2)').textContent;
+                    const description = row.querySelector('td:nth-child(3)').getAttribute('title');
+                    const date = row.querySelector('td:nth-child(4)').textContent;
+                    const pinnedCard = `<div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between border border-accent pinned-card" data-id="${articleId}"><div><img src="${imgSrc}" class="w-full h-40 object-cover rounded mb-3"><p class="text-xs text-slate-500 mb-1">${date}</p><h3 class="font-bold text-slate-800 mb-2">${title}</h3><p class="text-sm text-slate-600 leading-relaxed">${description.substring(0, 100) + '...'}</p></div></div>`;
+                    pinnedContainer.insertAdjacentHTML('beforeend', pinnedCard);
+                    button.classList.add('text-accent');
+                    button.classList.remove('text-slate-400');
+                }
+                updatePinnedPlaceholder();
+            };
+
+            window.deleteArticle = (button) => {
+                const row = button.closest('tr');
+                const articleId = row.dataset.id;
+                const pinnedCard = document.querySelector(`.pinned-card[data-id="${articleId}"]`);
+                if (pinnedCard) pinnedCard.remove();
+                row.remove();
+                updatePinnedPlaceholder();
+            };
+            
+            window.handleImagePreview = (input, previewId) => {
+                const preview = document.getElementById(previewId);
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.classList.remove('hidden');
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            };
+
+            // --- Initial Setup ---
+            sidebarToggle.addEventListener('click', openSidebar);
+            sidebarCloseBtn.addEventListener('click', closeSidebar);
+            sidebarOverlay.addEventListener('click', closeSidebar);
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (window.location.hash === targetId) return;
+                    history.pushState(null, '', targetId);
+                    showPage(targetId);
+                });
+            });
+            
+            const initialHash = window.location.hash || '#utama';
+            showPage(initialHash);
+            
+            window.onpopstate = () => {
+                showPage(window.location.hash || '#utama');
+            };
+
+            document.querySelectorAll('.page-content.active .animate-on-scroll').forEach(element => {
+                observer.observe(element);
+            });
+            
+            // --- Form Submission Handlers (CRUD Logic Restored) ---
+            document.getElementById('displayForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const id = document.getElementById('displayId').value;
+                const title = document.getElementById('displayTitle').value;
+                const desc = document.getElementById('displayDesc').value;
+                const imageFile = document.getElementById('displayImage').files[0];
+                const displayElement = document.getElementById(`display-${id}`);
+                displayElement.querySelector('h3').textContent = title;
+                displayElement.querySelector('p').textContent = desc;
+                if (imageFile) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) { displayElement.querySelector('img').src = e.target.result; }
+                    reader.readAsDataURL(imageFile);
+                }
+                window.closeModal('displayModal');
+            });
+
+            document.getElementById('clientForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const clientName = document.getElementById('clientName').value;
+                const clientLogoFile = document.getElementById('clientLogo').files[0];
+                const editId = document.getElementById('editClientId').value;
+                if (editId) {
+                    const row = document.querySelector(`tr[data-id="${editId}"]`);
+                    row.querySelector('td:nth-child(2)').textContent = clientName;
+                    if (clientLogoFile) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) { row.querySelector('img').src = e.target.result; }
+                        reader.readAsDataURL(clientLogoFile);
+                    }
+                } else {
+                    const clientId = 'client-' + Date.now();
+                    if (clientLogoFile) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const newRow = `<tr class="border-b border-slate-200" data-id="${clientId}"><td class="p-4"><img src="${e.target.result}" class="h-10 rounded"></td><td class="p-4">${clientName}</td><td class="p-4"><button class="text-blue-500 hover:text-blue-700 mr-3" onclick="editClient(this)"><i class="fas fa-edit fa-lg"></i></button><button class="text-red-500 hover:text-red-700" onclick="this.closest('tr').remove()"><i class="fas fa-trash fa-lg"></i></button></td></tr>`;
+                            document.getElementById('client-list').insertAdjacentHTML('beforeend', newRow);
+                        }
+                        reader.readAsDataURL(clientLogoFile);
+                    }
+                }
+                window.closeModal('clientModal');
+            });
+            
+            document.getElementById('productForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('productName').value;
+                const category = document.getElementById('productCategory').value;
+                const description = document.getElementById('productDescription').value;
+                const price = document.getElementById('productPrice').value;
+                const imageFile = document.getElementById('productImage').files[0];
+                const editId = document.getElementById('editProductId').value;
+                if (editId) {
+                    const row = document.querySelector(`tr[data-id="${editId}"]`);
+                    row.querySelector('td:nth-child(2)').textContent = name;
+                    const descCell = row.querySelector('td:nth-child(3)');
+                    descCell.textContent = description.substring(0, 20) + '...';
+                    descCell.title = description;
+                    row.querySelector('td:nth-child(4)').textContent = category;
+                    row.querySelector('td:nth-child(5)').textContent = price;
+                    if (imageFile) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) { row.querySelector('img').src = e.target.result; };
+                        reader.readAsDataURL(imageFile);
+                    }
+                } else {
+                    const productId = 'product-' + Date.now();
+                    if(imageFile) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const newRow = `<tr class="border-b border-slate-200" data-id="${productId}"><td class="p-4"><img src="${e.target.result}" class="h-16 w-16 object-cover rounded-md"></td><td class="p-4">${name}</td><td class="p-4 text-sm text-slate-600 max-w-xs truncate" title="${description}">${description.substring(0, 20) + '...'}</td><td class="p-4">${category}</td><td class="p-4">${price}</td><td class="p-4"><button class="text-blue-500 hover:text-blue-700 mr-3" onclick="editProduct(this)"><i class="fas fa-edit fa-lg"></i></button><button class="text-red-500 hover:text-red-700" onclick="this.closest('tr').remove()"><i class="fas fa-trash fa-lg"></i></button></td></tr>`;
+                            document.getElementById('product-list').insertAdjacentHTML('beforeend', newRow);
+                        };
+                        reader.readAsDataURL(imageFile);
+                    }
+                }
+                window.closeModal('productModal');
+            });
+
+            document.getElementById('articleForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const title = document.getElementById('articleTitle').value;
+                const description = document.getElementById('articleDescription').value;
+                const imageFile = document.getElementById('articleImage').files[0];
+                const editId = document.getElementById('editArticleId').value;
+                if (editId) {
+                    const row = document.querySelector(`tr[data-id="${editId}"]`);
+                    row.querySelector('td:nth-child(2)').textContent = title;
+                    const descCell = row.querySelector('td:nth-child(3)');
+                    descCell.textContent = description.substring(0, 50) + '...';
+                    descCell.title = description;
+                    if (imageFile) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) { row.querySelector('img').src = e.target.result; };
+                        reader.readAsDataURL(imageFile);
+                    }
+                } else {
+                    const date = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
+                    const articleId = 'article-' + Date.now(); 
+                    if (imageFile) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const imgSrc = e.target.result;
+                            const newRow = `<tr class="border-b border-slate-200" data-id="${articleId}"><td class="p-4"><img src="${imgSrc}" class="h-16 w-24 object-cover rounded-md"></td><td class="p-4 font-semibold">${title}</td><td class="p-4 text-sm text-slate-600 max-w-xs truncate" title="${description}">${description.substring(0, 50) + '...'}</td><td class="p-4">${date}</td><td class="p-4 whitespace-nowrap"><button title="Pin Artikel" class="text-slate-400 hover:text-accent mr-3" onclick="togglePin(this)"><i class="fas fa-thumbtack fa-lg"></i></button><button title="Edit" class="text-blue-500 hover:text-blue-700 mr-3" onclick="editArticle(this)"><i class="fas fa-edit fa-lg"></i></button><button title="Hapus" class="text-red-500 hover:text-red-700" onclick="deleteArticle(this)"><i class="fas fa-trash fa-lg"></i></button></td></tr>`;
+                            document.getElementById('article-list').insertAdjacentHTML('beforeend', newRow);
+                        }
+                        reader.readAsDataURL(imageFile);
+                    }
+                }
+                window.closeModal('articleModal');
+            });
+
+            document.getElementById('outletForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('outletName').value;
+                const address = document.getElementById('outletAddress').value;
+                const category = document.getElementById('outletCategory').value;
+                const imageFile = document.getElementById('outletImage').files[0];
+                const editId = document.getElementById('editOutletId').value;
+                if (editId) {
+                    const row = document.querySelector(`tr[data-id="${editId}"]`);
+                    row.querySelector('td:nth-child(2)').textContent = name;
+                    row.querySelector('td:nth-child(3)').textContent = address;
+                    row.querySelector('td:nth-child(4)').textContent = category;
+                    if (imageFile) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) { row.querySelector('img').src = e.target.result; };
+                        reader.readAsDataURL(imageFile);
+                    }
+                } else {
+                    const outletId = 'outlet-' + Date.now();
+                    if (imageFile) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const newRow = `<tr class="border-b border-slate-200" data-id="${outletId}"><td class="p-4"><img src="${e.target.result}" class="h-16 w-24 object-cover rounded-md"></td><td class="p-4">${name}</td><td class="p-4">${address}</td><td class="p-4">${category}</td><td class="p-4"><button class="text-blue-500 hover:text-blue-700 mr-3" onclick="editOutlet(this)"><i class="fas fa-edit fa-lg"></i></button><button class="text-red-500 hover:text-red-700" onclick="this.closest('tr').remove()"><i class="fas fa-trash fa-lg"></i></button></td></tr>`;
+                            document.getElementById('outlet-list').insertAdjacentHTML('beforeend', newRow);
+                        };
+                        reader.readAsDataURL(imageFile);
+                    }
+                }
+                window.closeModal('outletModal');
+            });
+        });
+    </script>
+</body>
+</html>
+
