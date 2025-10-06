@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aktivitas - D'jamoe</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'primary': '#154424',
+              'accent': '#E6D793',
+              'dark-bg': '#0a1c11',
+              'dark-card': '#1a3a24',
+              'light-text': '#FBF8ED',
+            },
+            fontFamily: {
+              'sans': ['Inter', 'sans-serif'],
+              'serif': ['Playfair Display', 'serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a1c11;
+            background-image: linear-gradient(160deg, #1a3a24 0%, #0a1c11 74%);
+            background-attachment: fixed;
+        }
+
+        .reveal-animation {
+            opacity: 0;
+            filter: blur(5px);
+            transform: translateY(50px) scale(0.98);
+            transition: opacity 0.8s cubic-bezier(0.5, 1, 0.89, 1), 
+                        transform 0.8s cubic-bezier(0.5, 1, 0.89, 1),
+                        filter 0.8s cubic-bezier(0.5, 1, 0.89, 1);
+        }
+        .reveal-animation.is-visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0) scale(1);
+        }
+
+        .wa-bubble {
+            animation: pulse 2.5s infinite cubic-bezier(0.66, 0, 0, 1);
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        #activity-modal {
+            transition: opacity 0.3s ease-in-out;
+        }
+        #activity-modal .modal-content {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        #activity-modal.hidden .modal-content {
+            transform: scale(0.95) translateY(20px);
+            opacity: 0;
+        }
+        
+    </style>
+</head>
+<body class="bg-dark-bg text-light-text">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 p-2 sm:p-4 transition-transform duration-300">
+        <div class="container mx-auto flex justify-between items-center bg-primary/30 backdrop-blur-lg rounded-full text-white p-2 shadow-lg">
+            <a href="index.html" class="flex-shrink-0">
+                <img src="gambar/logo_dj.png" alt="Logo D'jamoe" class="h-10 ml-2">
+            </a>
+            <nav class="hidden md:flex items-center gap-6 font-semibold">
+                <a href="index.html" class="text-accent/70 hover:text-white transition-colors">Beranda</a>
+                <a href="produk.html" class="text-accent/70 hover:text-white transition-colors">Produk</a>
+                <a href="aktivitas.html" class="font-bold text-white">Aktivitas</a>
+                <a href="outlet.html" class="text-accent/70 hover:text-white transition-colors">Temukan Kami</a>
+                <a href="about.html" class="text-accent/70 hover:text-white transition-colors">Tentang Kami</a>
+            </nav>
+            <div class="flex items-center gap-2">
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-full text-accent hover:bg-accent/10">
+                    <i data-lucide="menu" class="h-6 w-6"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-primary/95 backdrop-blur-lg z-[90] hidden md:hidden">
+        <div class="flex flex-col items-center justify-center h-full gap-8 text-2xl font-semibold">
+             <a href="index.html" class="text-accent hover:text-white transition-colors">Beranda</a>
+             <a href="produk.html" class="text-accent hover:text-white transition-colors">Produk</a>
+             <a href="aktivitas.html" class="font-bold text-white">Aktivitas</a>
+             <a href="outlet.html" class="text-accent hover:text-white transition-colors">Temukan Kami</a>
+             <a href="about.html" class="text-accent hover:text-white transition-colors">Tentang Kami</a>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative h-[60vh] bg-cover bg-center flex items-center justify-center text-center text-white" style="background-image: linear-gradient(rgba(10, 28, 17, 0.7), rgba(10, 28, 17, 0.8)), url('gambar/gambar2.jpeg');">
+            <div class="reveal-animation">
+                <h1 class="text-4xl md:text-7xl font-serif font-bold text-accent">Aktivitas & Wawasan</h1>
+                <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-white/90">Lebih dari sekadar produk, kami berbagi pengalaman dan pengetahuan tentang dunia jamu.</p>
+            </div>
+        </section>
+
+        <!-- Bagian Aktivitas & Wawasan (STRUKTUR DIPERBARUI) -->
+        <section class="py-24">
+            <div class="container mx-auto px-4 space-y-20">
+                <!-- Baris Pertama: Wawasan Tambahan -->
+                <div>
+                    <div class="bg-dark-card rounded-2xl shadow-xl p-8 md:p-12 reveal-animation">
+                        <div class="grid md:grid-cols-2 gap-12 items-center">
+                            <!-- Kolom Kiri: Gambar & Deskripsi -->
+                            <div>
+                                <img src="https://placehold.co/800x600/102b19/E6D793?text=Wawasan+Jamu" alt="Wawasan tentang Jamu" class="rounded-lg shadow-lg mb-6 w-full object-cover aspect-video">
+                                <h3 class="text-3xl font-serif font-bold text-accent">Selami Lebih Dalam Dunia Jamu</h3>
+                                <p class="mt-4 text-light-text/80 leading-relaxed">
+                                    Kami percaya edukasi adalah kunci untuk melestarikan warisan jamu. Temukan artikel menarik dan tonton video inspiratif kami untuk memperkaya pengetahuan Anda.
+                                </p>
+                            </div>
+                            <!-- Kolom Kanan: Link Artikel & YouTube -->
+                            <div class="space-y-8">
+                                <div>
+                                    <h4 class="text-2xl font-serif font-semibold text-accent/90 border-b-2 border-accent/20 pb-2 mb-4">Artikel Pilihan</h4>
+                                    <ul class="space-y-3">
+                                        <li><a href="#" class="flex items-center gap-3 text-light-text/80 hover:text-accent transition-colors group"><i data-lucide="book-open" class="w-5 h-5 text-accent/70 group-hover:text-accent"></i>Manfaat Kunyit untuk Kesehatan Modern</a></li>
+                                        <li><a href="#" class="flex items-center gap-3 text-light-text/80 hover:text-accent transition-colors group"><i data-lucide="book-open" class="w-5 h-5 text-accent/70 group-hover:text-accent"></i>Sejarah Jamu Gendong di Tanah Jawa</a></li>
+                                        <li><a href="#" class="flex items-center gap-3 text-light-text/80 hover:text-accent transition-colors group"><i data-lucide="book-open" class="w-5 h-5 text-accent/70 group-hover:text-accent"></i>5 Rempah Dapur Peningkat Imunitas</a></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="text-2xl font-serif font-semibold text-accent/90 border-b-2 border-accent/20 pb-2 mb-4">Tonton Kami di YouTube</h4>
+                                    <ul class="space-y-3">
+                                        <li><a href="#" class="flex items-center gap-3 text-light-text/80 hover:text-accent transition-colors group"><i data-lucide="youtube" class="w-5 h-5 text-accent/70 group-hover:text-accent"></i>Proses Pembuatan Beras Kencur D'jamoe</a></li>
+                                        <li><a href="#" class="flex items-center gap-3 text-light-text/80 hover:text-accent transition-colors group"><i data-lucide="youtube" class="w-5 h-5 text-accent/70 group-hover:text-accent"></i>Wawancara dengan Petani Rempah Lokal</a></li>
+                                        <li><a href="#" class="flex items-center gap-3 text-light-text/80 hover:text-accent transition-colors group"><i data-lucide="youtube" class="w-5 h-5 text-accent/70 group-hover:text-accent"></i>Liputan Acara Djamoe Class</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Baris Kedua: 4 Kartu Aktivitas -->
+                <div>
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-serif font-bold text-accent reveal-animation">Pilihan Pengalaman Unik</h2>
+                        <p class="mt-4 text-lg text-light-text/70 max-w-3xl mx-auto reveal-animation" style="transition-delay: 100ms;">
+                            Selami dunia jamu lebih dalam melalui berbagai kegiatan interaktif yang kami tawarkan.
+                        </p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <!-- Kartu 1: Djamoe Class -->
+                        <div data-activity="class" class="activity-card group cursor-pointer bg-dark-card rounded-2xl shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-2 reveal-animation" style="transition-delay: 200ms;">
+                            <div class="overflow-hidden">
+                                <img src="https://placehold.co/600x400/102b19/E6D793?text=Kelas+Meracik" alt="Djamoe Class" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-6 flex flex-col">
+                                <h3 class="font-serif text-2xl font-bold text-accent">Djamoe Class</h3>
+                                <p class="text-light-text/70 mt-2 text-sm leading-relaxed flex-grow" style="height: 6rem;">
+                                    Rasakan pengalaman autentik menjadi peracik jamu. Belajar langsung dari ahli dan bawa pulang jamu karya Anda sendiri.
+                                </p>
+                                <span class="mt-4 inline-block font-semibold text-accent/90 group-hover:text-accent transition-colors">
+                                    Lihat Detail &rarr;
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Kartu 2: Djamoe Visit -->
+                         <div data-activity="visit" class="activity-card group cursor-pointer bg-dark-card rounded-2xl shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-2 reveal-animation" style="transition-delay: 300ms;">
+                            <div class="overflow-hidden">
+                                <img src="https://placehold.co/600x400/102b19/E6D793?text=Kunjungan" alt="Djamoe Visit" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-6 flex flex-col">
+                                <h3 class="font-serif text-2xl font-bold text-accent">Djamoe Visit</h3>
+                                <p class="text-light-text/70 mt-2 text-sm leading-relaxed flex-grow" style="height: 6rem;">
+                                   Intip rahasia di balik kesegaran D'jamoe. Ikuti tur eksklusif di Omah Djamoe untuk melihat proses produksi kami dari dekat.
+                                </p>
+                                <span class="mt-4 inline-block font-semibold text-accent/90 group-hover:text-accent transition-colors">
+                                    Lihat Detail &rarr;
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Kartu 3: Private Event -->
+                        <div data-activity="private" class="activity-card group cursor-pointer bg-dark-card rounded-2xl shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-2 reveal-animation" style="transition-delay: 400ms;">
+                            <div class="overflow-hidden">
+                               <img src="https://placehold.co/600x400/102b19/E6D793?text=Acara+Privat" alt="Acara Privat" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-6 flex flex-col">
+                                <h3 class="font-serif text-2xl font-bold text-accent">Acara Privat</h3>
+                                <p class="text-light-text/70 mt-2 text-sm leading-relaxed flex-grow" style="height: 6rem;">
+                                    Jadikan acaramu lebih berkesan dengan sentuhan tradisi. Kami menyediakan 'Jamu Corner' atau workshop privat untuk berbagai acara.
+                                </p>
+                                <span class="mt-4 inline-block font-semibold text-accent/90 group-hover:text-accent transition-colors">
+                                    Lihat Detail &rarr;
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Kartu 4: Edukasi Komunitas -->
+                        <div data-activity="community" class="activity-card group cursor-pointer bg-dark-card rounded-2xl shadow-lg overflow-hidden transition-transform duration-300 hover:-translate-y-2 reveal-animation" style="transition-delay: 500ms;">
+                            <div class="overflow-hidden">
+                               <img src="https://placehold.co/600x400/102b19/E6D793?text=Komunitas" alt="Edukasi Komunitas" class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
+                            </div>
+                            <div class="p-6 flex flex-col">
+                                <h3 class="font-serif text-2xl font-bold text-accent">Edukasi Komunitas</h3>
+                                <p class="text-light-text/70 mt-2 text-sm leading-relaxed flex-grow" style="height: 6rem;">
+                                    Kami aktif berbagi wawasan tentang jamu di berbagai acara komunitas, sekolah, dan bazaar. Mari lestarikan warisan bersama.
+                                </p>
+                                 <span class="mt-4 inline-block font-semibold text-accent/90 group-hover:text-accent transition-colors">
+                                    Lihat Detail &rarr;
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black py-16">
+        <div class="container mx-auto px-6 text-gray-300">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                <div>
+                    <h3 class="font-bold text-lg mb-4 text-accent">Alamat</h3>
+                    <p class="text-gray-400">Jl. Ranumenggalan No.41, Mojorejo, Kec. Kartoharjo, <br>Kota Madiun, Jawa Timur 63119</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4 text-accent">Media Sosial</h3>
+                    <div class="flex space-x-6 justify-center md:justify-start">
+                        <a href="#" class="transition-transform hover:scale-110"><img src="gambar/icons8-instagram-48.png" alt="Instagram D'jamoe" class="w-10 h-10"></a>
+                        <a href="#" class="transition-transform hover:scale-110"><img src="gambar/icons8-facebook-48.png" alt="Facebook D'jamoe" class="w-10 h-10"></a>
+                        <a href="#" class="transition-transform hover:scale-110"><img src="gambar/icons8-whatsapp-48.png" alt="WhatsApp D'jamoe" class="w-10 h-10"></a>
+                        <a href="#" class="transition-transform hover:scale-110"><img src="gambar/icons8-tiktok-48.png" alt="TikTok D'jamoe" class="w-10 h-10"></a>
+                    </div>
+                </div>
+                 <div>
+                    <h3 class="font-bold text-lg mb-4 text-accent">Jam Buka</h3>
+                    <p class="text-gray-400">Senin - Jumat: 08:00 - 17:00</p>
+                    <p class="text-gray-400">Sabtu: 09:00 - 15:00</p>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
+                &copy; 2025 D'jamoe. Warisan Sehat dari Madiun.
+            </div>
+        </div>
+    </footer>
+    
+    <!-- TOMBOL BUBBLE WHATSAPP -->
+    <a href="https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20aktivitas%20di%20D'jamoe." 
+       target="_blank"
+       class="wa-bubble fixed bottom-20 md:bottom-6 right-6 z-50 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110">
+        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    </a>
+    
+    <!-- Bottom Navigation for Mobile -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-dark-card/80 backdrop-blur-lg border-t border-accent/20">
+        <div class="flex justify-around items-center h-16">
+            <a href="index.html" class="flex flex-col items-center justify-center text-accent/70 transition-colors">
+                <i data-lucide="home" class="w-6 h-6 mb-1"></i><span class="text-xs">Beranda</span>
+            </a>
+            <a href="produk.html" class="flex flex-col items-center justify-center text-accent/70 transition-colors">
+                 <i data-lucide="shopping-bag" class="w-6 h-6 mb-1"></i><span class="text-xs">Produk</span>
+            </a>
+            <a href="aktivitas.html" class="flex flex-col items-center justify-center text-accent font-bold transition-colors">
+                <i data-lucide="zap" class="w-6 h-6 mb-1"></i><span class="text-xs">Aktivitas</span>
+            </a>
+            <a href="outlet.html" class="flex flex-col items-center justify-center text-accent/70 transition-colors">
+                <i data-lucide="map-pin" class="w-6 h-6 mb-1"></i><span class="text-xs">Temukan Kami</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Modal (Pop-up) untuk Deskripsi Aktivitas -->
+    <div id="activity-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden">
+        <div class="modal-content bg-dark-card w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl p-8 relative">
+            <button id="close-modal" class="absolute top-4 right-4 p-2 rounded-full text-accent/70 hover:bg-primary/50 hover:text-accent transition-colors">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <h2 id="modal-title" class="text-3xl md:text-4xl font-serif font-bold text-accent mb-4 pr-10"></h2>
+            <div id="modal-content" class="text-light-text/80 space-y-4 leading-relaxed"></div>
+            <a id="modal-cta" href="https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20aktivitas%20di%20D'jamoe." target="_blank" class="mt-8 inline-block bg-accent text-primary font-bold py-3 px-8 rounded-full hover:bg-opacity-90 transition-transform hover:scale-105">
+                Info & Pendaftaran
+            </a>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.querySelector('header');
+            const mobileMenuBtn = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuIcon = mobileMenuBtn.querySelector('i');
+            let lastScrollTop = 0;
+            
+            const activityData = {
+                'class': {
+                    title: 'Djamoe Class',
+                    content: `<p>Rasakan pengalaman autentik menjadi peracik jamu. Dalam kelas eksklusif kami, Anda akan belajar langsung dari para ahli, mengenal ragam rempah, memahami khasiatnya, dan membawa pulang jamu hasil karya Anda sendiri.</p><ul class="list-disc list-inside mt-4 space-y-2"><li><strong>Lokasi:</strong> Indoor (Omah Djamoe) atau Outdoor (sesuai permintaan).</li><li><strong>Materi:</strong> Membuat jamu Beras Kencur & Kunyit Asam.</li><li><strong>Peserta:</strong> Minimal 25 orang per grup.</li><li><strong>Booking:</strong> Wajib melakukan pemesanan minimal H-7 dengan DP 50%.</li></ul><p class="mt-4">Sangat cocok untuk kegiatan gathering, arisan, atau acara kantor yang edukatif dan menyenangkan.</p>`
+                },
+                'visit': {
+                    title: 'Djamoe Visit',
+                    content: `<p>Ingin tahu rahasia di balik kesegaran D'jamoe? Ikuti tur eksklusif di Omah Djamoe untuk melihat langsung bagaimana kami mengolah rempah-rempah pilihan menjadi jamu berkualitas.</p><ul class="list-disc list-inside mt-4 space-y-2"><li><strong>Lokasi:</strong> Omah Djamoe, Madiun.</li><li><strong>Aktivitas:</strong> Tur fasilitas produksi, penjelasan proses dari bahan baku hingga pengemasan.</li><li><strong>Peserta:</strong> Minimal 20 orang per grup.</li><li><strong>Bonus:</strong> Sesi tanya jawab dan cicipi produk gratis.</li></ul><p class="mt-4">Ideal untuk kunjungan studi dari sekolah, universitas, atau komunitas yang ingin belajar tentang industri herbal tradisional.</p>`
+                },
+                'private': {
+                    title: 'Acara Privat & Korporat',
+                    content: `<p>Jadikan acara Anda lebih berkesan dengan sentuhan tradisi. Kami menyediakan layanan 'Jamu Corner' atau workshop privat yang bisa disesuaikan dengan kebutuhan acara Anda.</p><ul class="list-disc list-inside mt-4 space-y-2"><li><strong>Layanan:</strong> Jamu Corner (live racik), mini-workshop, suvenir jamu.</li><li><strong>Acara:</strong> Pernikahan, rapat kantor, seminar, pameran, acara keluarga.</li><li><strong>Fleksibilitas:</strong> Paket dapat disesuaikan sepenuhnya dengan tema dan anggaran acara Anda.</li></ul><p class="mt-4">Hubungi kami untuk konsultasi dan dapatkan penawaran khusus untuk membuat acara Anda unik dan menyehatkan.</p>`
+                },
+                'community': {
+                    title: 'Edukasi Komunitas',
+                    content: `<p>Kami percaya bahwa jamu adalah warisan yang harus dilestarikan. D'jamoe aktif berpartisipasi dalam berbagai acara komunitas untuk berbagi pengetahuan dan kecintaan terhadap jamu.</p><ul class="list-disc list-inside mt-4 space-y-2"><li><strong>Kegiatan:</strong> Partisipasi di bazaar lokal, demo meracik jamu, seminar kesehatan di sekolah atau instansi.</li><li><strong>Misi:</strong> Mengedukasi generasi muda tentang manfaat rempah dan jamu.</li><li><strong>Kolaborasi:</strong> Terbuka untuk undangan dan kolaborasi dengan komunitas, sekolah, atau penyelenggara acara di Madiun dan sekitarnya.</li></ul><p class="mt-4">Mari bersama-sama mempopulerkan kembali budaya minum jamu!</p>`
+                }
+            };
+            
+            const activityCards = document.querySelectorAll('.activity-card');
+            const modal = document.getElementById('activity-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalContent = document.getElementById('modal-content');
+
+            function openModal(activityKey) {
+                if (!activityData[activityKey]) return;
+                const data = activityData[activityKey];
+                modalTitle.textContent = data.title;
+                modalContent.innerHTML = data.content;
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+
+            activityCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const activityKey = card.dataset.activity;
+                    openModal(activityKey);
+                });
+            });
+
+            closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+            });
+
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const isMenuOpen = !mobileMenu.classList.contains('hidden');
+                    mobileMenu.classList.toggle('hidden');
+                    document.body.style.overflow = isMenuOpen ? '' : 'hidden';
+                    mobileMenuIcon.setAttribute('data-lucide', isMenuOpen ? 'menu' : 'x');
+                    lucide.createIcons();
+                });
+            }
+
+            window.addEventListener('scroll', () => {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > lastScrollTop && scrollTop > header.offsetHeight) {
+                    if (mobileMenu.classList.contains('hidden')) header.classList.add('-translate-y-full');
+                } else {
+                    header.classList.remove('-translate-y-full');
+                }
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
+            }, false);
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('is-visible');
+                    else entry.target.classList.remove('is-visible');
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.reveal-animation').forEach(el => observer.observe(el));
+            
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temukan Kami - D'jamoe</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'primary': '#154424',
+              'accent': '#E6D793',
+              'dark-bg': '#0a1c11',
+              'dark-card': '#1a3a24',
+              'light-text': '#FBF8ED',
+            },
+            fontFamily: {
+              'sans': ['Inter', 'sans-serif'],
+              'serif': ['Playfair Display', 'serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a1c11;
+            background-image: linear-gradient(160deg, #1a3a24 0%, #0a1c11 74%);
+            background-attachment: fixed;
+        }
+
+        .reveal-animation {
+            opacity: 0;
+            filter: blur(5px);
+            transform: translateY(50px) scale(0.98);
+            transition: opacity 0.8s cubic-bezier(0.5, 1, 0.89, 1), 
+                        transform 0.8s cubic-bezier(0.5, 1, 0.89, 1),
+                        filter 0.8s cubic-bezier(0.5, 1, 0.89, 1);
+        }
+        .reveal-animation.is-visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0) scale(1);
+        }
+    </style>
+</head>
+<body class="bg-dark-bg text-light-text">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 p-2 sm:p-4 transition-transform duration-300">
+        <div class="container mx-auto flex justify-between items-center bg-primary/30 backdrop-blur-lg rounded-full text-white p-2 shadow-lg">
+            <a href="index.html" class="flex-shrink-0">
+                <img src="gambar/logo_dj.png" alt="Logo D'jamoe" class="h-10 ml-2">
+            </a>
+            <nav class="hidden md:flex items-center gap-6 font-semibold">
+                <a href="index.html" class="text-accent/70 hover:text-white transition-colors">Beranda</a>
+                <a href="produk.html" class="text-accent/70 hover:text-white transition-colors">Produk</a>
+                <a href="aktivitas.html" class="text-accent/70 hover:text-white transition-colors">Aktivitas</a>
+                <a href="outlet.html" class="font-bold text-white">Temukan Kami</a>
+                <a href="about.html" class="text-accent/70 hover:text-white transition-colors">Tentang Kami</a>
+            </nav>
+            <div class="flex items-center gap-2">
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-full text-accent hover:bg-accent/10">
+                    <i data-lucide="menu" class="h-6 w-6"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-primary/95 backdrop-blur-lg z-[90] hidden md:hidden">
+        <div class="flex flex-col items-center justify-center h-full gap-8 text-2xl font-semibold">
+             <a href="index.html" class="text-accent hover:text-white transition-colors">Beranda</a>
+             <a href="produk.html" class="text-accent hover:text-white transition-colors">Produk</a>
+             <a href="aktivitas.html" class="text-accent hover:text-white transition-colors">Aktivitas</a>
+             <a href="outlet.html" class="font-bold text-white">Temukan Kami</a>
+             <a href="about.html" class="text-accent hover:text-white transition-colors">Tentang Kami</a>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative h-[60vh] bg-cover bg-center flex items-center justify-center text-center text-white" style="background-image: linear-gradient(rgba(10, 28, 17, 0.7), rgba(10, 28, 17, 0.8)), url('https://placehold.co/1920x1080/1a3a24/0a1c11?text=Lokasi');">
+            <div class="reveal-animation">
+                <h1 class="text-4xl md:text-7xl font-serif font-bold text-accent">Temukan Kami</h1>
+                <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-white/90">Dapatkan produk D'jamoe di mitra terdekat Anda.</p>
+            </div>
+        </section>
+
+        <!-- Outlet Section -->
+        <section class="py-24">
+            <div class="container mx-auto px-4">
+                
+                <!-- KOTAK-KOTAK KECIL -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Lokasi Mitra 1 -->
+                    <div class="bg-dark-card p-6 rounded-2xl shadow-lg flex flex-col reveal-animation" style="transition-delay: 100ms;">
+                        <h3 class="text-xl font-serif font-bold text-accent mb-3">Toko Oleh-Oleh "Madiun Asli"</h3>
+                        <div class="space-y-3 text-sm flex-grow">
+                            <p class="flex items-start gap-3 text-light-text/80"><i data-lucide="map-pin" class="w-4 h-4 mt-1 text-accent/80 flex-shrink-0"></i><span>Jl. Pahlawan No. 123, Madiun</span></p>
+                            <p class="flex items-center gap-3 text-light-text/80"><i data-lucide="message-circle" class="w-4 h-4 text-accent/80 flex-shrink-0"></i><span>0812-3456-7890</span></p>
+                        </div>
+                        <a href="https://maps.app.goo.gl/yourlink" target="_blank" class="mt-5 w-full text-center bg-primary/80 text-accent py-2.5 px-4 rounded-full hover:bg-accent hover:text-primary transition-colors duration-300 font-semibold text-sm">
+                            Petunjuk Arah
+                        </a>
+                    </div>
+                    <!-- Lokasi Mitra 2 -->
+                    <div class="bg-dark-card p-6 rounded-2xl shadow-lg flex flex-col reveal-animation" style="transition-delay: 200ms;">
+                        <h3 class="text-xl font-serif font-bold text-accent mb-3">Kafe "Senja Pagi"</h3>
+                         <div class="space-y-3 text-sm flex-grow">
+                            <p class="flex items-start gap-3 text-light-text/80"><i data-lucide="map-pin" class="w-4 h-4 mt-1 text-accent/80 flex-shrink-0"></i><span>Jl. Cokroaminoto No. 45, Madiun</span></p>
+                            <p class="flex items-center gap-3 text-light-text/80"><i data-lucide="message-circle" class="w-4 h-4 text-accent/80 flex-shrink-0"></i><span>0823-4567-8901</span></p>
+                        </div>
+                        <a href="https://maps.app.goo.gl/yourlink" target="_blank" class="mt-5 w-full text-center bg-primary/80 text-accent py-2.5 px-4 rounded-full hover:bg-accent hover:text-primary transition-colors duration-300 font-semibold text-sm">
+                            Petunjuk Arah
+                        </a>
+                    </div>
+                    <!-- Lokasi Mitra 3 -->
+                    <div class="bg-dark-card p-6 rounded-2xl shadow-lg flex flex-col reveal-animation" style="transition-delay: 300ms;">
+                        <h3 class="text-xl font-serif font-bold text-accent mb-3">Supermarket "Sehat Selalu"</h3>
+                         <div class="space-y-3 text-sm flex-grow">
+                            <p class="flex items-start gap-3 text-light-text/80"><i data-lucide="map-pin" class="w-4 h-4 mt-1 text-accent/80 flex-shrink-0"></i><span>Jl. Diponegoro No. 88, Madiun</span></p>
+                            <p class="flex items-center gap-3 text-light-text/80"><i data-lucide="message-circle" class="w-4 h-4 text-accent/80 flex-shrink-0"></i><span>0856-7890-1234</span></p>
+                        </div>
+                        <a href="https://maps.app.goo.gl/yourlink" target="_blank" class="mt-5 w-full text-center bg-primary/80 text-accent py-2.5 px-4 rounded-full hover:bg-accent hover:text-primary transition-colors duration-300 font-semibold text-sm">
+                            Petunjuk Arah
+                        </a>
+                    </div>
+                     <!-- Lokasi Mitra 4 (Tambahan) -->
+                    <div class="bg-dark-card p-6 rounded-2xl shadow-lg flex flex-col reveal-animation" style="transition-delay: 400ms;">
+                        <h3 class="text-xl font-serif font-bold text-accent mb-3">Apotek "Sumber Waras"</h3>
+                         <div class="space-y-3 text-sm flex-grow">
+                            <p class="flex items-start gap-3 text-light-text/80"><i data-lucide="map-pin" class="w-4 h-4 mt-1 text-accent/80 flex-shrink-0"></i><span>Jl. Jawa No. 15, Madiun</span></p>
+                            <p class="flex items-center gap-3 text-light-text/80"><i data-lucide="message-circle" class="w-4 h-4 text-accent/80 flex-shrink-0"></i><span>0877-1234-5678</span></p>
+                        </div>
+                        <a href="https://maps.app.goo.gl/yourlink" target="_blank" class="mt-5 w-full text-center bg-primary/80 text-accent py-2.5 px-4 rounded-full hover:bg-accent hover:text-primary transition-colors duration-300 font-semibold text-sm">
+                            Petunjuk Arah
+                        </a>
+                    </div>
+                     <!-- Lokasi Mitra 5 (Tambahan) -->
+                    <div class="bg-dark-card p-6 rounded-2xl shadow-lg flex flex-col reveal-animation" style="transition-delay: 500ms;">
+                        <h3 class="text-xl font-serif font-bold text-accent mb-3">Resto "Pawon Simbok"</h3>
+                         <div class="space-y-3 text-sm flex-grow">
+                            <p class="flex items-start gap-3 text-light-text/80"><i data-lucide="map-pin" class="w-4 h-4 mt-1 text-accent/80 flex-shrink-0"></i><span>Jl. Bali No. 99, Madiun</span></p>
+                            <p class="flex items-center gap-3 text-light-text/80"><i data-lucide="message-circle" class="w-4 h-4 text-accent/80 flex-shrink-0"></i><span>0899-5555-4321</span></p>
+                        </div>
+                        <a href="https://maps.app.goo.gl/yourlink" target="_blank" class="mt-5 w-full text-center bg-primary/80 text-accent py-2.5 px-4 rounded-full hover:bg-accent hover:text-primary transition-colors duration-300 font-semibold text-sm">
+                            Petunjuk Arah
+                        </a>
+                    </div>
+                     <!-- Lokasi Mitra 6 (Tambahan) -->
+                    <div class="bg-dark-card p-6 rounded-2xl shadow-lg flex flex-col reveal-animation" style="transition-delay: 600ms;">
+                        <h3 class="text-xl font-serif font-bold text-accent mb-3">Hotel "Kartika Madiun"</h3>
+                         <div class="space-y-3 text-sm flex-grow">
+                            <p class="flex items-start gap-3 text-light-text/80"><i data-lucide="map-pin" class="w-4 h-4 mt-1 text-accent/80 flex-shrink-0"></i><span>Jl. Merdeka No. 1, Madiun</span></p>
+                            <p class="flex items-center gap-3 text-light-text/80"><i data-lucide="message-circle" class="w-4 h-4 text-accent/80 flex-shrink-0"></i><span>0811-9876-5432</span></p>
+                        </div>
+                        <a href="https://maps.app.goo.gl/yourlink" target="_blank" class="mt-5 w-full text-center bg-primary/80 text-accent py-2.5 px-4 rounded-full hover:bg-accent hover:text-primary transition-colors duration-300 font-semibold text-sm">
+                            Petunjuk Arah
+                        </a>
+                    </div>
+                </div>
+
+                 <!-- Tombol Admin -->
+                <div class="text-center mt-20">
+                    <a href="admin.html" class="text-sm text-accent/50 hover:text-accent transition-colors">
+                        Login Admin
+                    </a>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black py-16">
+        <div class="container mx-auto px-6 text-gray-300">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                <div>
+                    <h3 class="font-bold text-lg mb-4 text-accent">Alamat</h3>
+                    <p class="text-gray-400">Jl. Ranumenggalan No.41, Mojorejo, Kec. Kartoharjo, <br>Kota Madiun, Jawa Timur 63119</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4 text-accent">Media Sosial</h3>
+                    <div class="flex space-x-6 justify-center md:justify-start">
+                        <a href="#" class="transition-transform hover:scale-110"><img src="gambar/icons8-instagram-48.png" alt="Instagram D'jamoe" class="w-10 h-10"></a>
+                        <a href="#" class="transition-transform hover:scale-110"><img src="gambar/icons8-facebook-48.png" alt="Facebook D'jamoe" class="w-10 h-10"></a>
+                        <a href="#" class="transition-transform hover:scale-110"><img src="gambar/icons8-whatsapp-48.png" alt="WhatsApp D'jamoe" class="w-10 h-10"></a>
+                        <a href="#" class="transition-transform hover:scale-110"><img src="gambar/icons8-tiktok-48.png" alt="TikTok D'jamoe" class="w-10 h-10"></a>
+                    </div>
+                </div>
+                 <div>
+                    <h3 class="font-bold text-lg mb-4 text-accent">Jam Buka</h3>
+                    <p class="text-gray-400">Senin - Jumat: 08:00 - 17:00</p>
+                    <p class="text-gray-400">Sabtu: 09:00 - 15:00</p>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
+                &copy; 2025 D'jamoe. Warisan Sehat dari Madiun.
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bottom Navigation for Mobile -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-dark-card/80 backdrop-blur-lg border-t border-accent/20">
+        <div class="flex justify-around items-center h-16">
+            <a href="index.html" class="flex flex-col items-center justify-center text-accent/70 transition-colors">
+                <i data-lucide="home" class="w-6 h-6 mb-1"></i><span class="text-xs">Beranda</span>
+            </a>
+            <a href="produk.html" class="flex flex-col items-center justify-center text-accent/70 transition-colors">
+                 <i data-lucide="shopping-bag" class="w-6 h-6 mb-1"></i><span class="text-xs">Produk</span>
+            </a>
+            <a href="aktivitas.html" class="flex flex-col items-center justify-center text-accent/70 transition-colors">
+                <i data-lucide="zap" class="w-6 h-6 mb-1"></i><span class="text-xs">Aktivitas</span>
+            </a>
+            <a href="outlet.html" class="flex flex-col items-center justify-center text-accent font-bold transition-colors">
+                <i data-lucide="map-pin" class="w-6 h-6 mb-1"></i><span class="text-xs">Temukan Kami</span>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.querySelector('header');
+            const mobileMenuBtn = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuIcon = mobileMenuBtn.querySelector('i');
+            let lastScrollTop = 0;
+
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const isMenuOpen = !mobileMenu.classList.contains('hidden');
+                    mobileMenu.classList.toggle('hidden');
+                    document.body.style.overflow = isMenuOpen ? '' : 'hidden';
+                    mobileMenuIcon.setAttribute('data-lucide', isMenuOpen ? 'menu' : 'x');
+                    lucide.createIcons();
+                });
+            }
+
+            window.addEventListener('scroll', () => {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > lastScrollTop && scrollTop > header.offsetHeight) {
+                    if (mobileMenu.classList.contains('hidden')) header.classList.add('-translate-y-full');
+                } else {
+                    header.classList.remove('-translate-y-full');
+                }
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
+            }, false);
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('is-visible');
+                    else entry.target.classList.remove('is-visible');
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.reveal-animation').forEach(el => observer.observe(el));
+            
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
+

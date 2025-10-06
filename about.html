@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - D'jamoe</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'primary': '#154424',
+              'accent': '#E6D793',
+              'dark-bg': '#0a1c11',
+              'dark-card': '#1a3a24',
+              'light-text': '#FBF8ED',
+            },
+            fontFamily: {
+              'sans': ['Inter', 'sans-serif'],
+              'serif': ['Playfair Display', 'serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a1c11;
+            background-image: linear-gradient(160deg, #1a3a24 0%, #0a1c11 74%);
+            background-attachment: fixed;
+        }
+
+        .reveal-animation {
+            opacity: 0;
+            filter: blur(5px);
+            transform: translateY(50px) scale(0.98);
+            transition: opacity 0.8s cubic-bezier(0.5, 1, 0.89, 1), 
+                        transform 0.8s cubic-bezier(0.5, 1, 0.89, 1),
+                        filter 0.8s cubic-bezier(0.5, 1, 0.89, 1);
+        }
+        .reveal-animation.is-visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0) scale(1);
+        }
+
+        .wa-bubble {
+            animation: pulse 2.5s infinite cubic-bezier(0.66, 0, 0, 1);
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* 3D Card Hover Effect */
+        .card-container {
+            perspective: 1000px;
+        }
+        .spice-card {
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transform-style: preserve-3d;
+        }
+        .card-container:hover .spice-card {
+            transform: rotateY(10deg) rotateX(10deg) translateZ(20px);
+            box-shadow: 20px 20px 40px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body class="bg-dark-bg text-light-text">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 p-2 sm:p-4 transition-transform duration-300">
+        <div class="container mx-auto flex justify-between items-center bg-primary/30 backdrop-blur-lg rounded-full text-white p-2 shadow-lg">
+            <a href="index.html" class="flex-shrink-0">
+                <img src="gambar/logo_dj.png" alt="Logo D'jamoe" class="h-10 ml-2">
+            </a>
+            <nav class="hidden md:flex items-center gap-6 font-semibold">
+                <a href="index.html" class="text-accent/70 hover:text-white transition-colors">Beranda</a>
+                <a href="produk.html" class="text-accent/70 hover:text-white transition-colors">Produk</a>
+                <a href="aktivitas.html" class="text-accent/70 hover:text-white transition-colors">Aktivitas</a>
+                <a href="outlet.html" class="text-accent/70 hover:text-white transition-colors">Temukan Kami</a>
+                <a href="about.html" class="font-bold text-white">Tentang Kami</a>
+            </nav>
+            <div class="flex items-center gap-2">
+                <button id="mobile-menu-button" class="md:hidden p-2 rounded-full text-accent hover:bg-accent/10">
+                    <i data-lucide="menu" class="h-6 w-6"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 bg-primary/95 backdrop-blur-lg z-[90] hidden md:hidden">
+        <div class="flex flex-col items-center justify-center h-full gap-8 text-2xl font-semibold">
+            <a href="index.html" class="text-accent hover:text-white transition-colors">Beranda</a>
+            <a href="produk.html" class="text-accent hover:text-white transition-colors">Produk</a>
+            <a href="aktivitas.html" class="text-accent hover:text-white transition-colors">Aktivitas</a>
+            <a href="outlet.html" class="text-accent hover:text-white transition-colors">Temukan Kami</a>
+            <a href="about.html" class="font-bold text-white">Tentang Kami</a>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative h-[60vh] bg-cover bg-center flex items-center justify-center text-center text-white" style="background-image: linear-gradient(rgba(10, 28, 17, 0.7), rgba(10, 28, 17, 0.8)), url('gambar/gambar2.jpeg');">
+            <div class="reveal-animation">
+                <h1 class="text-4xl md:text-7xl font-serif font-bold text-accent">Kisah Kami</h1>
+                <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-white/90">Dari Dapur Sederhana, Menjadi Warisan Kebaikan untuk Indonesia.</p>
+            </div>
+        </section>
+
+        <!-- Bagian Kisah Kami (Model Kotak) -->
+        <section class="py-24">
+            <div class="container mx-auto px-4 space-y-16 md:space-y-20">
+                <!-- Cerita 1: Awal Mula -->
+                <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12 reveal-animation">
+                    <div class="md:w-5/12">
+                        <img src="https://placehold.co/600x450/154424/E6D793?text=Dapur+Eyang" alt="Dapur Eyang Putri meracik jamu" class="rounded-lg shadow-xl w-full h-auto object-cover aspect-[4/3]">
+                    </div>
+                    <div class="md:w-7/12">
+                        <p class="text-sm font-semibold text-accent/80">AWAL MULA (1988)</p>
+                        <h3 class="text-3xl font-serif font-bold mt-2 text-accent">Resep Warisan Eyang Putri</h3>
+                        <p class="mt-4 text-light-text/80 leading-relaxed">
+                            Semuanya berawal di dapur sederhana Eyang Putri di Madiun. Dengan tangannya yang terampil, beliau meracik jamu dari rempah-rempah segar hasil kebun sendiri. Resep ini bukan sekadar minuman, melainkan ramuan cinta dan kearifan lokal yang diwariskan untuk menjaga kesehatan keluarga tercinta.
+                        </p>
+                    </div>
+                </div>
+                <!-- Cerita 2: Lahirnya D'jamoe -->
+                <div class="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12 reveal-animation">
+                    <div class="md:w-5/12">
+                        <img src="https://placehold.co/600x450/154424/E6D793?text=D'jamoe" alt="Produk pertama D'jamoe" class="rounded-lg shadow-xl w-full h-auto object-cover aspect-[4/3]">
+                    </div>
+                    <div class="md:w-7/12">
+                        <p class="text-sm font-semibold text-accent/80">LAHIRNYA D'JAMOE (2018)</p>
+                        <h3 class="text-3xl font-serif font-bold mt-2 text-accent">Dari Warisan Menjadi Misi</h3>
+                        <p class="mt-4 text-light-text/80 leading-relaxed">
+                            Didorong oleh keinginan tulus untuk berbagi kebaikan warisan leluhur, D'jamoe lahir. Kami mengemban misi sederhana: membawa khasiat jamu tradisional ke tengah masyarakat modern dengan cara yang praktis, higienis, dan lezat, tanpa menghilangkan esensi otentik dari resep pusaka tersebut.
+                        </p>
+                    </div>
+                </div>
+                <!-- Cerita 3: Komitmen Kami -->
+                <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12 reveal-animation">
+                    <div class="md:w-5/12">
+                        <img src="https://placehold.co/600x450/154424/E6D793?text=Kualitas" alt="Bahan baku rempah pilihan dari petani lokal" class="rounded-lg shadow-xl w-full h-auto object-cover aspect-[4/3]">
+                    </div>
+                    <div class="md:w-7/12">
+                        <p class="text-sm font-semibold text-accent/80">KOMITMEN KAMI</p>
+                        <h3 class="text-3xl font-serif font-bold mt-2 text-accent">Kualitas dan Kearifan Lokal</h3>
+                        <p class="mt-4 text-light-text/80 leading-relaxed">
+                            Kami memadukan kearifan lokal dengan standar modern. Bekerja sama dengan petani lokal Madiun, kami memastikan hanya bahan baku terbaik yang digunakan. Setiap botol D'jamoe diolah di fasilitas produksi yang bersih untuk menghasilkan jamu berkualitas premium yang terjaga khasiatnya.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Manfaat Rempah Section -->
+        <section class="py-20 bg-dark-card">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold text-accent reveal-animation">Kekuatan dari Alam</h2>
+                <p class="mt-2 mb-12 text-lg text-accent/70 max-w-2xl mx-auto reveal-animation" style="transition-delay: 100ms;">Setiap tegukan D'jamoe mengandung kebaikan dari rempah-rempah pilihan Indonesia.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                    <div class="card-container reveal-animation" style="transition-delay: 200ms;">
+                        <div class="spice-card bg-dark-bg p-8 rounded-2xl shadow-lg h-full">
+                            <i data-lucide="leaf" class="w-12 h-12 mx-auto text-accent"></i>
+                            <h3 class="mt-4 text-2xl font-serif font-bold">Kunyit</h3>
+                            <p class="mt-2 text-light-text/70">Dikenal sebagai anti-inflamasi alami yang kuat, membantu meredakan nyeri dan baik untuk pencernaan.</p>
+                        </div>
+                    </div>
+                    <div class="card-container reveal-animation" style="transition-delay: 300ms;">
+                        <div class="spice-card bg-dark-bg p-8 rounded-2xl shadow-lg h-full">
+                             <i data-lucide="sun" class="w-12 h-12 mx-auto text-accent"></i>
+                            <h3 class="mt-4 text-2xl font-serif font-bold">Jahe</h3>
+                            <p class="mt-2 text-light-text/70">Efektif menghangatkan tubuh, meningkatkan imunitas, serta meredakan mual dan masuk angin.</p>
+                        </div>
+                    </div>
+                     <div class="card-container reveal-animation" style="transition-delay: 400ms;">
+                        <div class="spice-card bg-dark-bg p-8 rounded-2xl shadow-lg h-full">
+                             <i data-lucide="flower-2" class="w-12 h-12 mx-auto text-accent"></i>
+                            <h3 class="mt-4 text-2xl font-serif font-bold">Kencur</h3>
+                            <p class="mt-2 text-light-text/70">Membantu meredakan batuk dan pegal linu, serta dipercaya dapat menambah nafsu makan.</p>
+                        </div>
+                    </div>
+                     <div class="card-container reveal-animation" style="transition-delay: 500ms;">
+                        <div class="spice-card bg-dark-bg p-8 rounded-2xl shadow-lg h-full">
+                            <i data-lucide="shield" class="w-12 h-12 mx-auto text-accent"></i>
+                            <h3 class="mt-4 text-2xl font-serif font-bold">Temulawak</h3>
+                            <p class="mt-2 text-light-text/70">Baik untuk menjaga kesehatan fungsi hati, sebagai antioksidan, dan membantu proses detoksifikasi tubuh.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-20 text-center">
+            <div class="container mx-auto px-4">
+                 <div class="reveal-animation">
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-accent">Jelajahi Kebaikan di Setiap Botolnya</h2>
+                    <p class="mt-4 text-lg text-light-text/70 max-w-2xl mx-auto">Temukan varian jamu yang diciptakan khusus untuk menemani hari dan menjaga kesehatan Anda.</p>
+                    <a href="produk.html" class="mt-8 inline-block bg-accent text-primary font-bold py-3 px-8 rounded-full hover:bg-opacity-90 transition-transform hover:scale-105">
+                        Lihat Semua Produk
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black py-16">
+        <div class="container mx-auto px-6 text-gray-300">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+                <div>
+                    <h3 class="font-bold text-lg mb-4 text-accent">Alamat</h3>
+                    <p class="text-gray-400">Jl. Ranumenggalan No.41, Mojorejo, Kec. Kartoharjo, <br>Kota Madiun, Jawa Timur 63119</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-4 text-accent">Media Sosial</h3>
+                    <div class="flex space-x-6 justify-center md:justify-start">
+                        <a href="#" class="transition-transform hover:scale-110"><img src="gambar/icons8-instagram-48.png" alt="Instagram D'jamoe" class="w-10 h-10"></a>
+                        <a href="#" class="transition-transform hover:scale-110"><img src="gambar/icons8-facebook-48.png" alt="Facebook D'jamoe" class="w-10 h-10"></a>
+                        <a href="#" class="transition-transform hover:scale-110"><img src="gambar/icons8-whatsapp-48.png" alt="WhatsApp D'jamoe" class="w-10 h-10"></a>
+                        <a href="#" class="transition-transform hover:scale-110"><img src="gambar/icons8-tiktok-48.png" alt="TikTok D'jamoe" class="w-10 h-10"></a>
+                    </div>
+                </div>
+                 <div>
+                    <h3 class="font-bold text-lg mb-4 text-accent">Jam Buka</h3>
+                    <p class="text-gray-400">Senin - Jumat: 08:00 - 17:00</p>
+                    <p class="text-gray-400">Sabtu: 09:00 - 15:00</p>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
+                &copy; 2025 D'jamoe. Warisan Sehat dari Madiun.
+            </div>
+        </div>
+    </footer>
+    
+    <!-- TOMBOL BUBBLE WHATSAPP -->
+    <a href="https://wa.me/6281234567890?text=Halo,%20saya%20tertarik%20dengan%20produk%20D'jamoe." 
+       target="_blank"
+       class="wa-bubble fixed bottom-20 md:bottom-6 right-6 z-50 bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110">
+        <i data-lucide="message-circle" class="w-8 h-8"></i>
+    </a>
+    
+    <!-- Bottom Navigation for Mobile -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-dark-card/80 backdrop-blur-lg border-t border-accent/20">
+        <div class="flex justify-around items-center h-16">
+            <a href="index.html" class="flex flex-col items-center justify-center text-accent/70 transition-colors">
+                <i data-lucide="home" class="w-6 h-6 mb-1"></i><span class="text-xs">Beranda</span>
+            </a>
+            <a href="produk.html" class="flex flex-col items-center justify-center text-accent/70 transition-colors">
+                 <i data-lucide="shopping-bag" class="w-6 h-6 mb-1"></i><span class="text-xs">Produk</span>
+            </a>
+            <a href="aktivitas.html" class="flex flex-col items-center justify-center text-accent/70 transition-colors">
+                <i data-lucide="zap" class="w-6 h-6 mb-1"></i><span class="text-xs">Aktivitas</span>
+            </a>
+            <a href="outlet.html" class="flex flex-col items-center justify-center text-accent/70 transition-colors">
+                <i data-lucide="map-pin" class="w-6 h-6 mb-1"></i><span class="text-xs">Temukan Kami</span>
+            </a>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.querySelector('header');
+            const mobileMenuBtn = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuIcon = mobileMenuBtn.querySelector('i');
+            let lastScrollTop = 0;
+
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const isMenuOpen = !mobileMenu.classList.contains('hidden');
+                    mobileMenu.classList.toggle('hidden');
+                    document.body.style.overflow = isMenuOpen ? '' : 'hidden';
+                    mobileMenuIcon.setAttribute('data-lucide', isMenuOpen ? 'menu' : 'x');
+                    lucide.createIcons();
+                });
+            }
+
+            window.addEventListener('scroll', () => {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > lastScrollTop && scrollTop > header.offsetHeight) {
+                    if (mobileMenu.classList.contains('hidden')) {
+                       header.classList.add('-translate-y-full');
+                    }
+                } else {
+                    header.classList.remove('-translate-y-full');
+                }
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
+            }, false);
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        entry.target.classList.remove('is-visible'); 
+                    }
+                });
+            }, { 
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.reveal-animation').forEach(el => {
+                observer.observe(el);
+            });
+            
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
